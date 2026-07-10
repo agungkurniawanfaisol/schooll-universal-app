@@ -1,29 +1,43 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AcademicEventController;
 use App\Http\Controllers\Api\V1\AchievementController;
 use App\Http\Controllers\Api\V1\ActivityController;
+use App\Http\Controllers\Api\V1\ActivityLogController;
 use App\Http\Controllers\Api\V1\AgendaController;
+use App\Http\Controllers\Api\V1\AnalyticsController;
+use App\Http\Controllers\Api\V1\ApiTokenController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\BackupController;
 use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\ContentController;
+use App\Http\Controllers\Api\V1\CustomPageController;
 use App\Http\Controllers\Api\V1\DashboardController;
+use App\Http\Controllers\Api\V1\DownloadDocumentController;
+use App\Http\Controllers\Api\V1\ExtracurricularController;
 use App\Http\Controllers\Api\V1\FacilityController;
+use App\Http\Controllers\Api\V1\FaqController;
 use App\Http\Controllers\Api\V1\GalleryController;
 use App\Http\Controllers\Api\V1\MediaController;
 use App\Http\Controllers\Api\V1\NewsController;
+use App\Http\Controllers\Api\V1\NewsletterController;
 use App\Http\Controllers\Api\V1\PermissionController;
+use App\Http\Controllers\Api\V1\PpdbController;
+use App\Http\Controllers\Api\V1\PreviewController;
 use App\Http\Controllers\Api\V1\PublicController;
 use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SeoController;
 use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\TeacherController;
 use App\Http\Controllers\Api\V1\TeacherExportController;
+use App\Http\Controllers\Api\V1\TenantController;
 use App\Http\Controllers\Api\V1\TestimonialController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\WebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (): void {
-    Route::prefix('public')->middleware('throttle:public')->group(function (): void {
+    Route::prefix('public')->middleware(['throttle:public', 'track.pageview'])->group(function (): void {
         Route::get('landing', [PublicController::class, 'landing']);
         Route::get('vision-mission', [PublicController::class, 'visionMission']);
         Route::get('teachers', [PublicController::class, 'teachers']);
@@ -41,7 +55,20 @@ Route::prefix('v1')->group(function (): void {
         Route::get('achievements/{slug}', [PublicController::class, 'achievementShow']);
         Route::get('news', [PublicController::class, 'news']);
         Route::get('news/{slug}', [PublicController::class, 'newsShow']);
+        Route::get('pages', [PublicController::class, 'pages']);
+        Route::get('pages/{slug}', [PublicController::class, 'pageShow']);
+        Route::get('faqs', [PublicController::class, 'faqs']);
+        Route::get('downloads', [PublicController::class, 'downloads']);
+        Route::get('downloads/{slug}/file', [DownloadDocumentController::class, 'publicDownload']);
+        Route::get('academic-events', [PublicController::class, 'academicEvents']);
+        Route::get('extracurriculars', [PublicController::class, 'extracurriculars']);
+        Route::get('extracurriculars/{slug}', [PublicController::class, 'extracurricularShow']);
+        Route::post('testimonials/submit', [TestimonialController::class, 'submitPublic']);
+        Route::get('preview/{token}', [PreviewController::class, 'show']);
         Route::post('contact', [ContactController::class, 'submit']);
+        Route::post('ppdb', [PpdbController::class, 'submit']);
+        Route::get('ppdb/status/{registrationNumber}', [PpdbController::class, 'checkStatus']);
+        Route::post('newsletter/subscribe', [NewsletterController::class, 'subscribe']);
     });
 
     Route::prefix('auth')->middleware('throttle:auth')->group(function (): void {
@@ -59,6 +86,12 @@ Route::prefix('v1')->group(function (): void {
         Route::get('dashboard', [DashboardController::class, 'index'])
             ->middleware('permission:dashboard.view');
 
+        Route::get('analytics', [AnalyticsController::class, 'index'])
+            ->middleware('permission:analytics.view');
+
+        Route::get('activity-logs', [ActivityLogController::class, 'index'])
+            ->middleware('permission:audit.view');
+
         Route::get('teachers/export', [TeacherExportController::class, 'export']);
         Route::post('teachers/import', [TeacherExportController::class, 'import']);
         Route::post('teachers/bulk-delete', [TeacherController::class, 'bulkDestroy']);
@@ -71,6 +104,11 @@ Route::prefix('v1')->group(function (): void {
         Route::post('news/bulk-delete', [NewsController::class, 'bulkDestroy']);
         Route::post('users/bulk-delete', [UserController::class, 'bulkDestroy']);
         Route::post('media/bulk-delete', [MediaController::class, 'bulkDestroy']);
+        Route::post('custom-pages/bulk-delete', [CustomPageController::class, 'bulkDestroy']);
+        Route::post('academic-events/bulk-delete', [AcademicEventController::class, 'bulkDestroy']);
+        Route::post('download-documents/bulk-delete', [DownloadDocumentController::class, 'bulkDestroy']);
+        Route::post('faqs/bulk-delete', [FaqController::class, 'bulkDestroy']);
+        Route::post('extracurriculars/bulk-delete', [ExtracurricularController::class, 'bulkDestroy']);
 
         Route::apiResource('users', UserController::class);
         Route::apiResource('roles', RoleController::class);
@@ -83,9 +121,31 @@ Route::prefix('v1')->group(function (): void {
         Route::apiResource('agendas', AgendaController::class);
         Route::apiResource('galleries', GalleryController::class);
         Route::apiResource('testimonials', TestimonialController::class);
+        Route::patch('testimonials/{testimonial}/moderation', [TestimonialController::class, 'updateModeration']);
         Route::apiResource('facilities', FacilityController::class);
         Route::apiResource('achievements', AchievementController::class);
         Route::apiResource('news', NewsController::class);
+        Route::apiResource('custom-pages', CustomPageController::class);
+        Route::apiResource('academic-events', AcademicEventController::class);
+        Route::apiResource('download-documents', DownloadDocumentController::class);
+        Route::apiResource('faqs', FaqController::class);
+        Route::apiResource('extracurriculars', ExtracurricularController::class);
+        Route::apiResource('tenants', TenantController::class);
+        Route::apiResource('webhooks', WebhookController::class);
+        Route::post('webhooks/{webhook}/test', [WebhookController::class, 'test']);
+        Route::apiResource('api-tokens', ApiTokenController::class);
+        Route::post('api-tokens/{api_token}/regenerate', [ApiTokenController::class, 'regenerate']);
+
+        Route::get('ppdb', [PpdbController::class, 'index']);
+        Route::get('ppdb/{ppdbRegistration}', [PpdbController::class, 'show']);
+        Route::patch('ppdb/{ppdbRegistration}/status', [PpdbController::class, 'updateStatus']);
+
+        Route::get('newsletter/subscribers', [NewsletterController::class, 'index']);
+        Route::get('newsletter/subscribers/export', [NewsletterController::class, 'export']);
+        Route::delete('newsletter/subscribers/{newsletterSubscriber}', [NewsletterController::class, 'destroy']);
+
+        Route::post('backup/create', [BackupController::class, 'create']);
+        Route::get('backup/download', [BackupController::class, 'download']);
 
         Route::prefix('content')->group(function (): void {
             Route::get('hero', [ContentController::class, 'heroIndex']);

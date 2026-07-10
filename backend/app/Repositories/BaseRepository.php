@@ -76,6 +76,14 @@ abstract class BaseRepository implements RepositoryInterface
             $query->where('status', 'published');
         }
 
+        if (! empty($filters['approved_only']) && $this->hasColumn('moderation_status')) {
+            $query->where('moderation_status', 'approved');
+        }
+
+        if (! empty($filters['pending_moderation']) && $this->hasColumn('moderation_status')) {
+            $query->where('moderation_status', 'pending');
+        }
+
         if (! empty($filters['visible_now'])) {
             $now = now();
             $query->where('status', 'published')
@@ -100,7 +108,7 @@ abstract class BaseRepository implements RepositoryInterface
         }
 
         foreach ($filters as $key => $value) {
-            if (in_array($key, ['search', 'status', 'published_only', 'visible_now', 'date_from', 'date_to', 'upcoming', 'sort', 'direction', 'per_page', 'page', 'all'], true)) {
+            if (in_array($key, ['search', 'status', 'published_only', 'approved_only', 'pending_moderation', 'visible_now', 'date_from', 'date_to', 'upcoming', 'sort', 'direction', 'per_page', 'page', 'all'], true)) {
                 continue;
             }
             if ($this->hasColumn($key) && $value !== null && $value !== '') {

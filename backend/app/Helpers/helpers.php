@@ -57,6 +57,19 @@ if (! function_exists('cms_permissions')) {
             'settings',
             'seo',
             'contact',
+            'pages',
+            'ppdb',
+            'academic_events',
+            'downloads',
+            'faqs',
+            'extracurriculars',
+            'newsletter',
+            'audit',
+            'analytics',
+            'webhooks',
+            'tenants',
+            'backup',
+            'api_tokens',
         ];
 
         $actions = ['view', 'create', 'update', 'delete'];
@@ -68,6 +81,9 @@ if (! function_exists('cms_permissions')) {
                     continue;
                 }
                 if ($module === 'permissions' && in_array($action, ['create', 'update', 'delete'], true)) {
+                    continue;
+                }
+                if (in_array($module, ['audit', 'analytics', 'backup'], true) && $action !== 'view') {
                     continue;
                 }
                 $permissions[] = "{$module}.{$action}";

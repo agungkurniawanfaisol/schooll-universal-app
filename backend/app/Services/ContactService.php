@@ -7,9 +7,14 @@ use App\Models\ContactSubmission;
 
 class ContactService
 {
+    public function __construct(private WebhookDispatcher $webhookDispatcher) {}
+
     public function submit(ContactSubmissionData $data): ContactSubmission
     {
-        return ContactSubmission::query()->create($data->toArray());
+        $submission = ContactSubmission::query()->create($data->toArray());
+        $this->webhookDispatcher->dispatch('contact.submitted', $submission->toArray());
+
+        return $submission;
     }
 
     public function list(array $filters = [], int $perPage = 15)
