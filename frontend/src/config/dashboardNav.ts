@@ -19,6 +19,7 @@ import {
   Sparkles,
   Trophy,
   Users,
+  Mail,
 } from 'lucide-react'
 
 export interface DashboardNavItem {
@@ -83,6 +84,7 @@ export const dashboardNavTree: DashboardNavItem[] = [
     children: [
       { id: 'users', label: 'Pengguna', href: '/dashboard/users', icon: Users },
       { id: 'roles', label: 'Role & Akses', href: '/dashboard/roles', icon: Shield },
+      { id: 'contacts', label: 'Pesan Kontak', href: '/dashboard/contacts', icon: Mail },
     ],
   },
 ]

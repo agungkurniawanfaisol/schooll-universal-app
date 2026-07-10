@@ -166,6 +166,16 @@ const RoleFormPage = lazy(() =>
     default: m.RoleFormPage,
   })),
 )
+const ContactsListPage = lazy(() =>
+  import('@/pages/dashboard/contacts/ContactsListPage').then((m) => ({
+    default: m.ContactsListPage,
+  })),
+)
+const ProfilePage = lazy(() =>
+  import('@/pages/dashboard/profile/ProfilePage').then((m) => ({
+    default: m.ProfilePage,
+  })),
+)
 const MediaManagerPage = lazy(() =>
   import('@/pages/dashboard/media/MediaManagerPage').then((m) => ({
     default: m.MediaManagerPage,
@@ -659,6 +669,24 @@ export const router = createBrowserRouter([
               <RoleFormPage />
             </LazyPage>
           </PermissionRoute>
+        ),
+      },
+      {
+        path: 'contacts',
+        element: (
+          <PermissionRoute permissions={['contact.view']}>
+            <LazyPage>
+              <ContactsListPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'profile',
+        element: (
+          <LazyPage>
+            <ProfilePage />
+          </LazyPage>
         ),
       },
       {
