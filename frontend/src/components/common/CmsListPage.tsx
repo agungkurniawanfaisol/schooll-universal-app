@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { Plus, Pencil, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -28,6 +29,7 @@ interface CmsListPageProps<T extends ListRow> {
   mapper: (item: Record<string, unknown>) => T
   extraColumns?: DataTableColumn<T>[]
   enableDateFilter?: boolean
+  headerActions?: ReactNode
 }
 
 export function CmsListPage<T extends ListRow>({
@@ -42,6 +44,7 @@ export function CmsListPage<T extends ListRow>({
   mapper,
   extraColumns = [],
   enableDateFilter = false,
+  headerActions,
 }: CmsListPageProps<T>) {
   const { success } = useNotificationStore()
   const [deleteOpen, setDeleteOpen] = useState(false)
@@ -169,12 +172,15 @@ export function CmsListPage<T extends ListRow>({
             { label: breadcrumbLabel },
           ]}
           actions={
-            <Button variant="gradient" className="w-full sm:w-auto" asChild>
-              <Link to={`${basePath}/new`}>
-                <Plus className="h-4 w-4" />
-                Tambah {breadcrumbLabel}
-              </Link>
-            </Button>
+            <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+              {headerActions}
+              <Button variant="gradient" className="w-full sm:w-auto" asChild>
+                <Link to={`${basePath}/new`}>
+                  <Plus className="h-4 w-4" />
+                  Tambah {breadcrumbLabel}
+                </Link>
+              </Button>
+            </div>
           }
         />
         {enableDateFilter ? (
