@@ -1,10 +1,10 @@
-import { ArrowLeft, Award } from 'lucide-react'
-import { Link, useParams } from 'react-router-dom'
+import { Award } from 'lucide-react'
+import { useParams } from 'react-router-dom'
 
+import { BackButton } from '@/components/common/BackButton'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { PublicPageShell } from '@/components/layout/PublicPageShell'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { usePublicAchievement } from '@/hooks/usePublicContent'
 
 export function AchievementDetailPage() {
@@ -23,12 +23,7 @@ export function AchievementDetailPage() {
     return (
       <div className="container mx-auto px-4 py-24 text-center lg:px-8">
         <h1 className="text-2xl font-bold">Prestasi tidak ditemukan</h1>
-        <Button variant="gradient" className="mt-6" asChild>
-          <Link to="/prestasi">
-            <ArrowLeft className="h-4 w-4" />
-            Kembali ke Prestasi
-          </Link>
-        </Button>
+        <BackButton to="/prestasi" label="Kembali ke Prestasi" variant="gradient" className="mt-6" />
       </div>
     )
   }
@@ -36,16 +31,9 @@ export function AchievementDetailPage() {
   const title = String(achievement.title ?? 'Prestasi')
 
   return (
-    <PublicPageShell title={title} description={achievement.description ? String(achievement.description) : title}>
+    <PublicPageShell backTo="/prestasi" backLabel="Kembali ke Prestasi" title={title} description={achievement.description ? String(achievement.description) : title}>
       <article className="mx-auto max-w-3xl">
-        <Button variant="ghost" size="sm" className="mb-6 -ml-2" asChild>
-          <Link to="/prestasi">
-            <ArrowLeft className="h-4 w-4" />
-            Kembali ke Prestasi
-          </Link>
-        </Button>
-
-        <div className="mb-4 flex flex-wrap items-center gap-3">
+<div className="mb-4 flex flex-wrap items-center gap-3">
           <Award className="h-6 w-6 text-accent" />
           {achievement.category ? <Badge variant="secondary">{String(achievement.category)}</Badge> : null}
           {achievement.year ? <span className="text-sm text-muted-foreground">{String(achievement.year)}</span> : null}

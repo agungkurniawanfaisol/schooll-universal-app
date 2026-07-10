@@ -1,10 +1,9 @@
-import { ArrowLeft } from 'lucide-react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
+import { BackButton } from '@/components/common/BackButton'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { PublicPageShell } from '@/components/layout/PublicPageShell'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
 import { usePublicTeacher } from '@/hooks/usePublicContent'
 
 export function TeacherDetailPage() {
@@ -23,12 +22,7 @@ export function TeacherDetailPage() {
     return (
       <div className="container mx-auto px-4 py-24 text-center lg:px-8">
         <h1 className="text-2xl font-bold">Guru tidak ditemukan</h1>
-        <Button variant="gradient" className="mt-6" asChild>
-          <Link to="/guru">
-            <ArrowLeft className="h-4 w-4" />
-            Kembali ke Guru
-          </Link>
-        </Button>
+        <BackButton to="/guru" label="Kembali ke Guru" variant="gradient" className="mt-6" />
       </div>
     )
   }
@@ -36,16 +30,9 @@ export function TeacherDetailPage() {
   const name = String(teacher.name ?? 'Guru')
 
   return (
-    <PublicPageShell title={name} description={String(teacher.position ?? teacher.subject ?? name)}>
+    <PublicPageShell backTo="/guru" backLabel="Kembali ke Guru" title={name} description={String(teacher.position ?? teacher.subject ?? name)}>
       <article className="mx-auto max-w-3xl">
-        <Button variant="ghost" size="sm" className="mb-6 -ml-2" asChild>
-          <Link to="/guru">
-            <ArrowLeft className="h-4 w-4" />
-            Kembali ke Guru
-          </Link>
-        </Button>
-
-        <div className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left">
+<div className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left">
           <Avatar className="mb-4 h-28 w-28 ring-4 ring-primary/10 sm:mb-0 sm:mr-6">
             {teacher.photo ? (
               <AvatarImage src={String(teacher.photo)} alt={name} />

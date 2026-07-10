@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { BackButton } from '@/components/common/BackButton'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -21,6 +22,9 @@ interface PageHeaderProps {
   breadcrumbs?: BreadcrumbItem[]
   actions?: ReactNode
   className?: string
+  backTo?: string
+  backLabel?: string
+  onBack?: () => void
 }
 
 export function PageHeader({
@@ -29,9 +33,17 @@ export function PageHeader({
   breadcrumbs,
   actions,
   className,
+  backTo,
+  backLabel,
+  onBack,
 }: PageHeaderProps) {
+  const showBack = Boolean(backTo || onBack)
+
   return (
     <div className={cn('space-y-4', className)}>
+      {showBack && (
+        <BackButton to={backTo} label={backLabel} onBack={onBack} />
+      )}
       {breadcrumbs && breadcrumbs.length > 0 && (
         <Breadcrumb>
           <BreadcrumbList>

@@ -1,12 +1,15 @@
-import { ArrowLeft, Calendar } from 'lucide-react'
-import { Link, useParams } from 'react-router-dom'
+import { Calendar } from 'lucide-react'
+import { useParams } from 'react-router-dom'
 
+import { BackButton } from '@/components/common/BackButton'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { PublicPageShell } from '@/components/layout/PublicPageShell'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { formatDate } from '@/api/utils'
 import { usePublicActivity } from '@/hooks/usePublicContent'
+
+const BACK_TO = '/kegiatan'
+const BACK_LABEL = 'Kembali ke Kegiatan'
 
 export function ActivityDetailPage() {
   const { slug = '' } = useParams()
@@ -24,12 +27,7 @@ export function ActivityDetailPage() {
     return (
       <div className="container mx-auto px-4 py-24 text-center lg:px-8">
         <h1 className="text-2xl font-bold">Kegiatan tidak ditemukan</h1>
-        <Button variant="gradient" className="mt-6" asChild>
-          <Link to="/kegiatan">
-            <ArrowLeft className="h-4 w-4" />
-            Kembali ke Kegiatan
-          </Link>
-        </Button>
+        <BackButton to={BACK_TO} label={BACK_LABEL} variant="gradient" className="mt-6" />
       </div>
     )
   }
@@ -37,15 +35,13 @@ export function ActivityDetailPage() {
   const title = String(activity.title ?? 'Kegiatan')
 
   return (
-    <PublicPageShell title={title} description={activity.description ? String(activity.description) : title}>
+    <PublicPageShell
+      backTo={BACK_TO}
+      backLabel={BACK_LABEL}
+      title={title}
+      description={activity.description ? String(activity.description) : title}
+    >
       <article className="mx-auto max-w-3xl">
-        <Button variant="ghost" size="sm" className="mb-6 -ml-2" asChild>
-          <Link to="/kegiatan">
-            <ArrowLeft className="h-4 w-4" />
-            Kembali ke Kegiatan
-          </Link>
-        </Button>
-
         <div className="mb-4 flex flex-wrap items-center gap-3">
           <Badge variant="secondary">Kegiatan</Badge>
           <span className="flex items-center gap-1 text-sm text-muted-foreground">

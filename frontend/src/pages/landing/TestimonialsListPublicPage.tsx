@@ -25,7 +25,7 @@ export function TestimonialsListPublicPage() {
   const totalPages = data?.meta.totalPages ?? 1
 
   return (
-    <PublicPageShell title="Testimoni" description="Apa kata orang tua, alumni, dan mitra">
+    <PublicPageShell backTo="/" backLabel="Kembali ke Beranda" title="Testimoni" description="Apa kata orang tua, alumni, dan mitra">
       <div className="mx-auto max-w-4xl space-y-8">
         <PublicPageHeader
           eyebrow="Testimoni"

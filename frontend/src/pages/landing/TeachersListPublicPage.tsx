@@ -25,7 +25,7 @@ export function TeachersListPublicPage() {
   const totalPages = data?.meta.totalPages ?? 1
 
   return (
-    <PublicPageShell title="Guru" description="Tenaga pendidik profesional sekolah">
+    <PublicPageShell backTo="/" backLabel="Kembali ke Beranda" title="Guru" description="Tenaga pendidik profesional sekolah">
       <div className="mx-auto max-w-6xl space-y-8">
         <PublicPageHeader
           eyebrow="Akademik"

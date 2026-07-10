@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { ImageUploader } from '@/components/common/ImageUploader'
+import { LogoUploader } from '@/components/common/LogoUploader'
 import { SettingsPageShell } from '@/components/settings/SettingsPageShell'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useFooter, useSaveFooter } from '@/hooks/useContentApi'
-import { uploadMediaFile } from '@/hooks/useMediaUpload'
 import { useNotificationStore } from '@/stores/notificationStore'
 
 interface FooterForm {
@@ -66,10 +65,10 @@ export function FooterSettingsPage() {
             </div>
             <div className="space-y-2">
               <Label>Logo Footer</Label>
-              <ImageUploader
+              <LogoUploader
                 value={watch('logo')}
                 onChange={(url) => setValue('logo', url)}
-                onUpload={uploadMediaFile}
+                label="Upload logo footer"
               />
             </div>
             <Button type="submit" variant="gradient" disabled={saveMutation.isPending}>

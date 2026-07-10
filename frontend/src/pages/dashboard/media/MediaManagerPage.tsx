@@ -75,6 +75,8 @@ export function MediaManagerPage() {
       <div className="space-y-6">
         <PageHeader
           title="Media Manager"
+          backTo="/dashboard"
+          backLabel="Kembali ke Dashboard"
           description="Kelola file gambar dan media website"
           breadcrumbs={[
             { label: 'Dashboard', href: '/dashboard' },

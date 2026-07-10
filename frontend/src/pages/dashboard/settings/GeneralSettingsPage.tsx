@@ -2,14 +2,14 @@ import { Plus, Trash2 } from 'lucide-react'
 import { useEffect } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 
-import { ImageUploader } from '@/components/common/ImageUploader'
+import { LogoUploader } from '@/components/common/LogoUploader'
 import { SettingsPageShell } from '@/components/settings/SettingsPageShell'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
 import { useGeneralSettings, useSaveGeneralSettings, type GeneralSettingsForm } from '@/hooks/useSettingsApi'
-import { uploadMediaFile } from '@/hooks/useMediaUpload'
 import { useNotificationStore } from '@/stores/notificationStore'
 
 export function GeneralSettingsPage() {
@@ -23,12 +23,14 @@ export function GeneralSettingsPage() {
       schoolTagline: '',
       schoolLogo: '',
       ppdbUrl: '',
+      splashScreenEnabled: true,
       heroStats: [],
     },
   })
 
   const { fields, append, remove } = useFieldArray({ control, name: 'heroStats' })
   const schoolLogo = watch('schoolLogo')
+  const splashScreenEnabled = watch('splashScreenEnabled')
 
   useEffect(() => {
     if (data) reset(data)
@@ -63,15 +65,43 @@ export function GeneralSettingsPage() {
             </div>
             <div className="space-y-2">
               <Label>Logo Sekolah</Label>
-              <ImageUploader
+              <LogoUploader
                 value={schoolLogo}
                 onChange={(url) => setValue('schoolLogo', url)}
-                onUpload={uploadMediaFile}
               />
+              <p className="text-xs text-muted-foreground">
+                Logo ditampilkan di navbar, footer, dan panel admin. Hanya file yang diupload melalui sistem yang diterima.
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="ppdbUrl">URL PPDB / Pendaftaran</Label>
               <Input id="ppdbUrl" placeholder="/berita/... atau https://..." {...register('ppdbUrl')} />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-none shadow-soft">
+          <CardHeader>
+            <CardTitle>Splash Screen</CardTitle>
+            <CardDescription>
+              Layar pembuka dengan logo dan nama sekolah saat pengunjung pertama kali membuka landing page
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between gap-4 rounded-xl border border-border p-4">
+              <div className="space-y-1">
+                <Label htmlFor="splashScreenEnabled">Aktifkan splash screen</Label>
+                <p className="text-xs text-muted-foreground">
+                  {splashScreenEnabled
+                    ? 'Splash screen ditampilkan sekali per kunjungan di halaman utama.'
+                    : 'Landing page langsung menampilkan konten tanpa splash screen.'}
+                </p>
+              </div>
+              <Switch
+                id="splashScreenEnabled"
+                checked={splashScreenEnabled}
+                onCheckedChange={(enabled) => setValue('splashScreenEnabled', enabled)}
+              />
             </div>
           </CardContent>
         </Card>

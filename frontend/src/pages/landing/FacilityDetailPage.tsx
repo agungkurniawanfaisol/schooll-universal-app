@@ -1,9 +1,9 @@
-import { ArrowLeft, Building2 } from 'lucide-react'
-import { Link, useParams } from 'react-router-dom'
+import { Building2 } from 'lucide-react'
+import { useParams } from 'react-router-dom'
 
+import { BackButton } from '@/components/common/BackButton'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { PublicPageShell } from '@/components/layout/PublicPageShell'
-import { Button } from '@/components/ui/button'
 import { usePublicFacility } from '@/hooks/usePublicContent'
 
 export function FacilityDetailPage() {
@@ -22,12 +22,7 @@ export function FacilityDetailPage() {
     return (
       <div className="container mx-auto px-4 py-24 text-center lg:px-8">
         <h1 className="text-2xl font-bold">Fasilitas tidak ditemukan</h1>
-        <Button variant="gradient" className="mt-6" asChild>
-          <Link to="/fasilitas">
-            <ArrowLeft className="h-4 w-4" />
-            Kembali ke Fasilitas
-          </Link>
-        </Button>
+        <BackButton to="/fasilitas" label="Kembali ke Fasilitas" variant="gradient" className="mt-6" />
       </div>
     )
   }
@@ -35,16 +30,9 @@ export function FacilityDetailPage() {
   const title = String(facility.title ?? 'Fasilitas')
 
   return (
-    <PublicPageShell title={title} description={facility.description ? String(facility.description) : title}>
+    <PublicPageShell backTo="/fasilitas" backLabel="Kembali ke Fasilitas" title={title} description={facility.description ? String(facility.description) : title}>
       <article className="mx-auto max-w-3xl">
-        <Button variant="ghost" size="sm" className="mb-6 -ml-2" asChild>
-          <Link to="/fasilitas">
-            <ArrowLeft className="h-4 w-4" />
-            Kembali ke Fasilitas
-          </Link>
-        </Button>
-
-        <h1 className="text-3xl font-bold tracking-tight md:text-4xl">{title}</h1>
+<h1 className="text-3xl font-bold tracking-tight md:text-4xl">{title}</h1>
 
         {facility.image ? (
           <div className="mt-8 overflow-hidden rounded-2xl shadow-soft">

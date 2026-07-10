@@ -20,7 +20,7 @@ export function VisionMissionPublicPage() {
   const missions = items.filter((item) => item.type === 'mission')
 
   return (
-    <PublicPageShell title="Visi & Misi" description="Arah dan komitmen sekolah kami">
+    <PublicPageShell backTo="/" backLabel="Kembali ke Beranda" title="Visi & Misi" description="Arah dan komitmen sekolah kami">
       <div className="mx-auto max-w-5xl space-y-8">
         <PublicPageHeader
           eyebrow="Profil"

@@ -87,6 +87,8 @@ export function UserFormPage() {
       <div className="mx-auto max-w-2xl space-y-6">
         <PageHeader
           title={isEdit ? 'Edit Pengguna' : 'Tambah Pengguna'}
+          backTo="/dashboard/users"
+          backLabel="Kembali ke Pengguna"
           breadcrumbs={[
             { label: 'Dashboard', href: '/dashboard' },
             { label: 'Pengguna', href: '/dashboard/users' },

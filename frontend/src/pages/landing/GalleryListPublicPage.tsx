@@ -32,7 +32,7 @@ export function GalleryListPublicPage() {
   const totalPages = data?.meta.totalPages ?? 1
 
   return (
-    <PublicPageShell title="Galeri" description="Dokumentasi kegiatan sekolah">
+    <PublicPageShell backTo="/" backLabel="Kembali ke Beranda" title="Galeri" description="Dokumentasi kegiatan sekolah">
       <div className="mx-auto max-w-6xl space-y-8">
         <PublicPageHeader
           eyebrow="Informasi"

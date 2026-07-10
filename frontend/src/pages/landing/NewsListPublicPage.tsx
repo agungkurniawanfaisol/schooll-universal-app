@@ -33,6 +33,8 @@ export function NewsListPublicPage() {
 
   return (
     <PublicPageShell
+      backTo="/"
+      backLabel="Kembali ke Beranda"
       title="Berita Sekolah"
       description="Informasi dan pengumuman resmi sekolah"
     >

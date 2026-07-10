@@ -26,7 +26,7 @@ export function AchievementsListPublicPage() {
   const totalPages = data?.meta.totalPages ?? 1
 
   return (
-    <PublicPageShell title="Prestasi" description="Pencapaian gemilang sekolah">
+    <PublicPageShell backTo="/" backLabel="Kembali ke Beranda" title="Prestasi" description="Pencapaian gemilang sekolah">
       <div className="mx-auto max-w-6xl space-y-8">
         <PublicPageHeader
           eyebrow="Prestasi"

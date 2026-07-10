@@ -103,6 +103,8 @@ export function CmsFormPage<TForm extends FieldValues & { isPublished: boolean }
       <div className="mx-auto max-w-2xl space-y-6 pb-24 md:pb-0">
         <PageHeader
           title={isEdit ? `Edit ${title}` : `Tambah ${title}`}
+          backTo={listPath}
+          backLabel={`Kembali ke ${breadcrumbLabel}`}
           breadcrumbs={[
             { label: 'Dashboard', href: '/dashboard' },
             { label: breadcrumbLabel, href: listPath },

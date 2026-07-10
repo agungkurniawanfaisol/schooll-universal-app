@@ -1,13 +1,16 @@
-import { ArrowLeft, Calendar } from 'lucide-react'
-import { Link, useParams } from 'react-router-dom'
+import { Calendar } from 'lucide-react'
+import { useParams } from 'react-router-dom'
 
+import { BackButton } from '@/components/common/BackButton'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { SEOHead } from '@/components/common/SEOHead'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { formatDate } from '@/api/utils'
 import { usePublicNews } from '@/hooks/usePublicContent'
 import { sanitizeHtml } from '@/lib/sanitizeHtml'
+
+const BACK_TO = '/berita'
+const BACK_LABEL = 'Kembali ke Berita'
 
 export function NewsDetailPage() {
   const { slug = '' } = useParams()
@@ -26,12 +29,7 @@ export function NewsDetailPage() {
       <div className="container mx-auto px-4 py-24 text-center lg:px-8">
         <h1 className="text-2xl font-bold">Berita tidak ditemukan</h1>
         <p className="mt-2 text-muted-foreground">Artikel mungkin telah dihapus atau belum dipublikasikan.</p>
-        <Button variant="gradient" className="mt-6" asChild>
-          <Link to="/">
-            <ArrowLeft className="h-4 w-4" />
-            Kembali ke Beranda
-          </Link>
-        </Button>
+        <BackButton to="/" label="Kembali ke Beranda" variant="gradient" className="mt-6" />
       </div>
     )
   }
@@ -50,12 +48,7 @@ export function NewsDetailPage() {
       />
       <article className="surface-page py-24 md:py-28">
         <div className="container mx-auto max-w-3xl px-4 lg:px-8">
-          <Button variant="ghost" size="sm" className="mb-6 -ml-2" asChild>
-            <Link to="/berita">
-              <ArrowLeft className="h-4 w-4" />
-              Kembali ke Berita
-            </Link>
-          </Button>
+          <BackButton to={BACK_TO} label={BACK_LABEL} className="mb-6" />
 
           <div className="mb-4 flex flex-wrap items-center gap-3">
             <Badge variant="secondary">Berita</Badge>

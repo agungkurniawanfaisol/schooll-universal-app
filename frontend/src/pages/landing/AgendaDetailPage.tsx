@@ -1,10 +1,10 @@
-import { ArrowLeft, Calendar, Clock, MapPin } from 'lucide-react'
-import { Link, useParams } from 'react-router-dom'
+import { Calendar, Clock, MapPin } from 'lucide-react'
+import { useParams } from 'react-router-dom'
 
+import { BackButton } from '@/components/common/BackButton'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { PublicPageShell } from '@/components/layout/PublicPageShell'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { formatDate } from '@/api/utils'
 import { usePublicAgenda } from '@/hooks/usePublicContent'
 
@@ -25,12 +25,7 @@ export function AgendaDetailPage() {
       <div className="container mx-auto px-4 py-24 text-center lg:px-8">
         <h1 className="text-2xl font-bold">Agenda tidak ditemukan</h1>
         <p className="mt-2 text-muted-foreground">Agenda mungkin telah dihapus atau belum dipublikasikan.</p>
-        <Button variant="gradient" className="mt-6" asChild>
-          <Link to="/agenda">
-            <ArrowLeft className="h-4 w-4" />
-            Kembali ke Agenda
-          </Link>
-        </Button>
+        <BackButton to="/agenda" label="Kembali ke Agenda" variant="gradient" className="mt-6" />
       </div>
     )
   }
@@ -38,16 +33,9 @@ export function AgendaDetailPage() {
   const title = String(agenda.title ?? 'Agenda')
 
   return (
-    <PublicPageShell title={title} description={agenda.description ? String(agenda.description) : title}>
+    <PublicPageShell backTo="/agenda" backLabel="Kembali ke Agenda" title={title} description={agenda.description ? String(agenda.description) : title}>
       <article className="mx-auto max-w-3xl">
-        <Button variant="ghost" size="sm" className="mb-6 -ml-2" asChild>
-          <Link to="/agenda">
-            <ArrowLeft className="h-4 w-4" />
-            Kembali ke Agenda
-          </Link>
-        </Button>
-
-        <div className="mb-4 flex flex-wrap items-center gap-3">
+<div className="mb-4 flex flex-wrap items-center gap-3">
           <Badge variant="secondary">Agenda</Badge>
           <span className="flex items-center gap-1 text-sm text-muted-foreground">
             <Calendar className="h-4 w-4" />

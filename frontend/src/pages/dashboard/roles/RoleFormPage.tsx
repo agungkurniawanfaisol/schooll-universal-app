@@ -97,6 +97,8 @@ export function RoleFormPage() {
       <div className="mx-auto max-w-3xl space-y-6">
         <PageHeader
           title={isEdit ? 'Edit Role' : 'Tambah Role'}
+          backTo="/dashboard/roles"
+          backLabel="Kembali ke Role"
           breadcrumbs={[
             { label: 'Dashboard', href: '/dashboard' },
             { label: 'Role', href: '/dashboard/roles' },

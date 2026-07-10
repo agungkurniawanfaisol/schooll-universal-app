@@ -29,7 +29,7 @@ export function AgendaListPublicPage() {
   const totalPages = data?.meta.totalPages ?? 1
 
   return (
-    <PublicPageShell title="Agenda Sekolah" description="Jadwal dan acara sekolah">
+    <PublicPageShell backTo="/" backLabel="Kembali ke Beranda" title="Agenda Sekolah" description="Jadwal dan acara sekolah">
       <div className="mx-auto max-w-4xl space-y-8">
         <PublicPageHeader
           eyebrow="Agenda"

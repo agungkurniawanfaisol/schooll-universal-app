@@ -26,6 +26,8 @@ export function SettingsPageShell({
         <PageHeader
           title={title}
           description={description}
+          backTo="/dashboard"
+          backLabel="Kembali ke Dashboard"
           breadcrumbs={[
             { label: 'Dashboard', href: '/dashboard' },
             { label: 'Pengaturan' },

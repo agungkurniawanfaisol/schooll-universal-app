@@ -97,6 +97,8 @@ export function ProfilePage() {
       <div className="mx-auto max-w-2xl space-y-6">
         <PageHeader
           title="Profil Saya"
+          backTo="/dashboard"
+          backLabel="Kembali ke Dashboard"
           breadcrumbs={[
             { label: 'Dashboard', href: '/dashboard' },
             { label: 'Profil' },
