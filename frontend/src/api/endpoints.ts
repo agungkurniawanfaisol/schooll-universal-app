@@ -6,6 +6,7 @@ export const endpoints = {
     logout: `${API_BASE}/auth/logout`,
     refresh: `${API_BASE}/auth/refresh`,
     me: `${API_BASE}/auth/me`,
+    profile: `${API_BASE}/auth/profile`,
   },
   dashboard: {
     index: `${API_BASE}/dashboard`,
@@ -17,6 +18,8 @@ export const endpoints = {
     update: (id: string | number) => `${API_BASE}/teachers/${id}`,
     delete: (id: string | number) => `${API_BASE}/teachers/${id}`,
     bulkDelete: `${API_BASE}/teachers/bulk-delete`,
+    export: `${API_BASE}/teachers/export`,
+    import: `${API_BASE}/teachers/import`,
   },
   agendas: {
     list: `${API_BASE}/agendas`,

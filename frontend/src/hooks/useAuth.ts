@@ -47,11 +47,18 @@ export function useAuth() {
     }
   }, [storeLogout, navigate])
 
+  const refreshUser = useCallback(async () => {
+    const response = await apiClient.get<ApiResponse<ApiRecord>>(endpoints.auth.me)
+    const payload = unwrapApiData(response)
+    useAuthStore.getState().setUser(mapUserFromApi(payload))
+  }, [])
+
   return {
     user,
     isAuthenticated,
     login,
     logout,
+    refreshUser,
     hasPermission,
     hasAnyPermission,
   }

@@ -1,4 +1,5 @@
 import { Bell, LogOut, Menu, Moon, Search, Sun, User } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -72,9 +73,11 @@ export function DashboardHeader({ title }: DashboardHeaderProps) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              Profil
+            <DropdownMenuItem asChild>
+              <Link to="/dashboard/profile">
+                <User className="mr-2 h-4 w-4" />
+                Profil
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => void logout()} className="text-destructive">
