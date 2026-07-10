@@ -231,6 +231,151 @@ const GeneralSettingsPage = lazy(() =>
     default: m.GeneralSettingsPage,
   })),
 )
+const CustomPagesListPage = lazy(() =>
+  import('@/pages/dashboard/custom-pages/CustomPagesListPage').then((m) => ({
+    default: m.CustomPagesListPage,
+  })),
+)
+const CustomPageFormPage = lazy(() =>
+  import('@/pages/dashboard/custom-pages/CustomPageFormPage').then((m) => ({
+    default: m.CustomPageFormPage,
+  })),
+)
+const AcademicEventsListPage = lazy(() =>
+  import('@/pages/dashboard/academic-events/AcademicEventsListPage').then((m) => ({
+    default: m.AcademicEventsListPage,
+  })),
+)
+const AcademicEventFormPage = lazy(() =>
+  import('@/pages/dashboard/academic-events/AcademicEventFormPage').then((m) => ({
+    default: m.AcademicEventFormPage,
+  })),
+)
+const DownloadsListPage = lazy(() =>
+  import('@/pages/dashboard/downloads/DownloadsListPage').then((m) => ({
+    default: m.DownloadsListPage,
+  })),
+)
+const DownloadFormPage = lazy(() =>
+  import('@/pages/dashboard/downloads/DownloadFormPage').then((m) => ({
+    default: m.DownloadFormPage,
+  })),
+)
+const FaqsListPage = lazy(() =>
+  import('@/pages/dashboard/faqs/FaqsListPage').then((m) => ({
+    default: m.FaqsListPage,
+  })),
+)
+const FaqFormPage = lazy(() =>
+  import('@/pages/dashboard/faqs/FaqFormPage').then((m) => ({
+    default: m.FaqFormPage,
+  })),
+)
+const ExtracurricularsListPage = lazy(() =>
+  import('@/pages/dashboard/extracurriculars/ExtracurricularsListPage').then((m) => ({
+    default: m.ExtracurricularsListPage,
+  })),
+)
+const ExtracurricularFormPage = lazy(() =>
+  import('@/pages/dashboard/extracurriculars/ExtracurricularFormPage').then((m) => ({
+    default: m.ExtracurricularFormPage,
+  })),
+)
+const PpdbListPage = lazy(() =>
+  import('@/pages/dashboard/ppdb/PpdbListPage').then((m) => ({
+    default: m.PpdbListPage,
+  })),
+)
+const NewsletterSubscribersPage = lazy(() =>
+  import('@/pages/dashboard/newsletter/NewsletterSubscribersPage').then((m) => ({
+    default: m.NewsletterSubscribersPage,
+  })),
+)
+const ActivityLogsPage = lazy(() =>
+  import('@/pages/dashboard/audit/ActivityLogsPage').then((m) => ({
+    default: m.ActivityLogsPage,
+  })),
+)
+const AnalyticsPage = lazy(() =>
+  import('@/pages/dashboard/analytics/AnalyticsPage').then((m) => ({
+    default: m.AnalyticsPage,
+  })),
+)
+const BackupPage = lazy(() =>
+  import('@/pages/dashboard/system/BackupPage').then((m) => ({
+    default: m.BackupPage,
+  })),
+)
+const WebhooksListPage = lazy(() =>
+  import('@/pages/dashboard/system/WebhooksListPage').then((m) => ({
+    default: m.WebhooksListPage,
+  })),
+)
+const WebhookFormPage = lazy(() =>
+  import('@/pages/dashboard/system/WebhookFormPage').then((m) => ({
+    default: m.WebhookFormPage,
+  })),
+)
+const ApiTokensListPage = lazy(() =>
+  import('@/pages/dashboard/system/ApiTokensListPage').then((m) => ({
+    default: m.ApiTokensListPage,
+  })),
+)
+const ApiTokenFormPage = lazy(() =>
+  import('@/pages/dashboard/system/ApiTokenFormPage').then((m) => ({
+    default: m.ApiTokenFormPage,
+  })),
+)
+const TenantsListPage = lazy(() =>
+  import('@/pages/dashboard/system/TenantsListPage').then((m) => ({
+    default: m.TenantsListPage,
+  })),
+)
+const TenantFormPage = lazy(() =>
+  import('@/pages/dashboard/system/TenantFormPage').then((m) => ({
+    default: m.TenantFormPage,
+  })),
+)
+const CustomPagePublicPage = lazy(() =>
+  import('@/pages/landing/CustomPagePublicPage').then((m) => ({
+    default: m.CustomPagePublicPage,
+  })),
+)
+const FaqPublicPage = lazy(() =>
+  import('@/pages/landing/FaqPublicPage').then((m) => ({
+    default: m.FaqPublicPage,
+  })),
+)
+const DownloadsPublicPage = lazy(() =>
+  import('@/pages/landing/DownloadsPublicPage').then((m) => ({
+    default: m.DownloadsPublicPage,
+  })),
+)
+const AcademicCalendarPublicPage = lazy(() =>
+  import('@/pages/landing/AcademicCalendarPublicPage').then((m) => ({
+    default: m.AcademicCalendarPublicPage,
+  })),
+)
+const ExtracurricularsListPublicPage = lazy(() =>
+  import('@/pages/landing/ExtracurricularsListPublicPage').then((m) => ({
+    default: m.ExtracurricularsListPublicPage,
+  })),
+)
+const ExtracurricularDetailPage = lazy(() =>
+  import('@/pages/landing/ExtracurricularDetailPage').then((m) => ({
+    default: m.ExtracurricularDetailPage,
+  })),
+)
+const PpdbPublicPage = lazy(() =>
+  import('@/pages/landing/PpdbPublicPage').then((m) => ({
+    default: m.PpdbPublicPage,
+  })),
+)
+const PreviewPage = lazy(() =>
+  import('@/pages/landing/PreviewPage').then((m) => ({
+    default: m.PreviewPage,
+  })),
+)
 
 function LazyPage({ children }: { children: React.ReactNode }) {
   return (
@@ -384,6 +529,70 @@ export const router = createBrowserRouter([
         element: (
           <LazyPage>
             <AchievementDetailPage />
+          </LazyPage>
+        ),
+      },
+      {
+        path: 'halaman/:slug',
+        element: (
+          <LazyPage>
+            <CustomPagePublicPage />
+          </LazyPage>
+        ),
+      },
+      {
+        path: 'faq',
+        element: (
+          <LazyPage>
+            <FaqPublicPage />
+          </LazyPage>
+        ),
+      },
+      {
+        path: 'unduhan',
+        element: (
+          <LazyPage>
+            <DownloadsPublicPage />
+          </LazyPage>
+        ),
+      },
+      {
+        path: 'kalender-akademik',
+        element: (
+          <LazyPage>
+            <AcademicCalendarPublicPage />
+          </LazyPage>
+        ),
+      },
+      {
+        path: 'ekstrakurikuler',
+        element: (
+          <LazyPage>
+            <ExtracurricularsListPublicPage />
+          </LazyPage>
+        ),
+      },
+      {
+        path: 'ekstrakurikuler/:slug',
+        element: (
+          <LazyPage>
+            <ExtracurricularDetailPage />
+          </LazyPage>
+        ),
+      },
+      {
+        path: 'ppdb',
+        element: (
+          <LazyPage>
+            <PpdbPublicPage />
+          </LazyPage>
+        ),
+      },
+      {
+        path: 'preview/:token',
+        element: (
+          <LazyPage>
+            <PreviewPage />
           </LazyPage>
         ),
       },
@@ -775,6 +984,296 @@ export const router = createBrowserRouter([
           <LazyPage>
             <SocialSettingsPage />
           </LazyPage>
+        ),
+      },
+      {
+        path: 'custom-pages',
+        element: (
+          <PermissionRoute permissions={['pages.view']}>
+            <LazyPage>
+              <CustomPagesListPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'custom-pages/new',
+        element: (
+          <PermissionRoute permissions={['pages.create']}>
+            <LazyPage>
+              <CustomPageFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'custom-pages/:id/edit',
+        element: (
+          <PermissionRoute permissions={['pages.update']}>
+            <LazyPage>
+              <CustomPageFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'academic-events',
+        element: (
+          <PermissionRoute permissions={['academic_events.view']}>
+            <LazyPage>
+              <AcademicEventsListPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'academic-events/new',
+        element: (
+          <PermissionRoute permissions={['academic_events.create']}>
+            <LazyPage>
+              <AcademicEventFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'academic-events/:id/edit',
+        element: (
+          <PermissionRoute permissions={['academic_events.update']}>
+            <LazyPage>
+              <AcademicEventFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'downloads',
+        element: (
+          <PermissionRoute permissions={['downloads.view']}>
+            <LazyPage>
+              <DownloadsListPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'downloads/new',
+        element: (
+          <PermissionRoute permissions={['downloads.create']}>
+            <LazyPage>
+              <DownloadFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'downloads/:id/edit',
+        element: (
+          <PermissionRoute permissions={['downloads.update']}>
+            <LazyPage>
+              <DownloadFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'faqs',
+        element: (
+          <PermissionRoute permissions={['faqs.view']}>
+            <LazyPage>
+              <FaqsListPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'faqs/new',
+        element: (
+          <PermissionRoute permissions={['faqs.create']}>
+            <LazyPage>
+              <FaqFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'faqs/:id/edit',
+        element: (
+          <PermissionRoute permissions={['faqs.update']}>
+            <LazyPage>
+              <FaqFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'extracurriculars',
+        element: (
+          <PermissionRoute permissions={['extracurriculars.view']}>
+            <LazyPage>
+              <ExtracurricularsListPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'extracurriculars/new',
+        element: (
+          <PermissionRoute permissions={['extracurriculars.create']}>
+            <LazyPage>
+              <ExtracurricularFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'extracurriculars/:id/edit',
+        element: (
+          <PermissionRoute permissions={['extracurriculars.update']}>
+            <LazyPage>
+              <ExtracurricularFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'ppdb',
+        element: (
+          <PermissionRoute permissions={['ppdb.view']}>
+            <LazyPage>
+              <PpdbListPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'newsletter',
+        element: (
+          <PermissionRoute permissions={['newsletter.view']}>
+            <LazyPage>
+              <NewsletterSubscribersPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'audit',
+        element: (
+          <PermissionRoute permissions={['audit.view']}>
+            <LazyPage>
+              <ActivityLogsPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'analytics',
+        element: (
+          <PermissionRoute permissions={['analytics.view']}>
+            <LazyPage>
+              <AnalyticsPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'backup',
+        element: (
+          <PermissionRoute permissions={['backup.view']}>
+            <LazyPage>
+              <BackupPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'webhooks',
+        element: (
+          <PermissionRoute permissions={['webhooks.view']}>
+            <LazyPage>
+              <WebhooksListPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'webhooks/new',
+        element: (
+          <PermissionRoute permissions={['webhooks.create']}>
+            <LazyPage>
+              <WebhookFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'webhooks/:id/edit',
+        element: (
+          <PermissionRoute permissions={['webhooks.update']}>
+            <LazyPage>
+              <WebhookFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'api-tokens',
+        element: (
+          <PermissionRoute permissions={['api_tokens.view']}>
+            <LazyPage>
+              <ApiTokensListPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'api-tokens/new',
+        element: (
+          <PermissionRoute permissions={['api_tokens.create']}>
+            <LazyPage>
+              <ApiTokenFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'api-tokens/:id/edit',
+        element: (
+          <PermissionRoute permissions={['api_tokens.update']}>
+            <LazyPage>
+              <ApiTokenFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'tenants',
+        element: (
+          <PermissionRoute permissions={['tenants.view']}>
+            <LazyPage>
+              <TenantsListPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'tenants/new',
+        element: (
+          <PermissionRoute permissions={['tenants.create']}>
+            <LazyPage>
+              <TenantFormPage />
+            </LazyPage>
+          </PermissionRoute>
+        ),
+      },
+      {
+        path: 'tenants/:id/edit',
+        element: (
+          <PermissionRoute permissions={['tenants.update']}>
+            <LazyPage>
+              <TenantFormPage />
+            </LazyPage>
+          </PermissionRoute>
         ),
       },
     ],

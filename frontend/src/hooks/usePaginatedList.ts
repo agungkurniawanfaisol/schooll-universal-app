@@ -17,6 +17,7 @@ interface UsePaginatedListOptions<T> {
   bulkDeleteUrl?: string
   mapper: (item: ApiRecord) => T
   initialPerPage?: number
+  extraParams?: Record<string, string | number>
 }
 
 export function usePaginatedList<T>({
@@ -25,6 +26,7 @@ export function usePaginatedList<T>({
   bulkDeleteUrl,
   mapper,
   initialPerPage = 10,
+  extraParams,
 }: UsePaginatedListOptions<T>) {
   const queryClient = useQueryClient()
   const [page, setPage] = useState(1)
@@ -36,7 +38,7 @@ export function usePaginatedList<T>({
   const [dateTo, setDateTo] = useState('')
   const [selectedIds, setSelectedIds] = useState<string[]>([])
 
-  const params: ListParams = { page, perPage, search, sortBy, sortOrder, dateFrom, dateTo }
+  const params: ListParams = { page, perPage, search, sortBy, sortOrder, dateFrom, dateTo, ...extraParams }
 
   const query = useQuery({
     queryKey: [queryKey, params],

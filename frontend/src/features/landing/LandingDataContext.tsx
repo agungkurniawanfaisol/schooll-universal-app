@@ -1,5 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react'
 
+import { parseSettingBoolean } from '@/api/contentMappers'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { DEFAULT_SCHOOL_NAME, DEFAULT_SCHOOL_TAGLINE } from '@/config/schoolDefaults'
 import { useLandingData, type LandingData } from '@/hooks/useApiQueries'
@@ -10,6 +11,7 @@ export interface LandingSettings {
   schoolTagline: string
   schoolLogo: string
   ppdbUrl: string
+  splashScreenEnabled: boolean
   heroStats: Array<{ label: string; value: number; suffix: string }>
 }
 
@@ -25,6 +27,7 @@ const defaultSettings: LandingSettings = {
   schoolTagline: DEFAULT_SCHOOL_TAGLINE,
   schoolLogo: '',
   ppdbUrl: '',
+  splashScreenEnabled: true,
   heroStats: [
     { label: 'Siswa Aktif', value: 900, suffix: '+' },
     { label: 'Guru Profesional', value: 40, suffix: '+' },
@@ -45,6 +48,7 @@ function parseSettings(raw: ApiRecord | undefined): LandingSettings {
     schoolTagline: String(raw.school_tagline ?? defaultSettings.schoolTagline),
     schoolLogo: String(raw.school_logo ?? defaultSettings.schoolLogo),
     ppdbUrl: String(raw.ppdb_url ?? defaultSettings.ppdbUrl),
+    splashScreenEnabled: parseSettingBoolean(raw.splash_screen_enabled, defaultSettings.splashScreenEnabled),
     heroStats: stats?.length ? stats : defaultSettings.heroStats,
   }
 }

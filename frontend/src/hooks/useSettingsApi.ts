@@ -19,6 +19,7 @@ export interface GeneralSettingsForm {
   schoolTagline: string
   schoolLogo: string
   ppdbUrl: string
+  splashScreenEnabled: boolean
   heroStats: HeroStat[]
 }
 
@@ -60,6 +61,7 @@ export function useSaveGeneralSettings() {
         upsertSetting('school_tagline', { text: form.schoolTagline }),
         upsertSetting('school_logo', { url: form.schoolLogo || null }),
         upsertSetting('ppdb_url', { url: form.ppdbUrl || null }),
+        upsertSetting('splash_screen_enabled', { enabled: form.splashScreenEnabled }),
         upsertSetting('hero_stats', form.heroStats, 'hero'),
       ])
     },
@@ -75,6 +77,7 @@ export function useSaveGeneralSettings() {
             school_tagline: form.schoolTagline,
             school_logo: form.schoolLogo,
             ppdb_url: form.ppdbUrl,
+            splash_screen_enabled: form.splashScreenEnabled,
             hero_stats: form.heroStats,
           },
         }

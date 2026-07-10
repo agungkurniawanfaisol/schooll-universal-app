@@ -184,3 +184,131 @@ export const contactFormSchema = z.object({
 })
 
 export type ContactFormData = z.infer<typeof contactFormSchema>
+
+export const customPageSchema = z.object({
+  title: z.string().min(3, 'Judul wajib diisi'),
+  slug: z.string().optional(),
+  content: z.string().min(10, 'Konten minimal 10 karakter'),
+  metaTitle: z.string().optional(),
+  metaDescription: z.string().optional(),
+  publishStartAt: z.string().optional(),
+  publishEndAt: z.string().optional(),
+  isPublished: z.boolean(),
+  order: z.number().int().min(0).optional(),
+})
+
+export type CustomPageFormData = z.infer<typeof customPageSchema>
+
+export const academicEventSchema = z.object({
+  title: z.string().min(3, 'Judul wajib diisi'),
+  slug: z.string().optional(),
+  description: z.string().optional(),
+  eventType: z.string().optional(),
+  startDate: z.string().min(1, 'Tanggal mulai wajib diisi'),
+  endDate: z.string().optional(),
+  color: z.string().optional(),
+  isPublished: z.boolean(),
+  order: z.number().int().min(0).optional(),
+})
+
+export type AcademicEventFormData = z.infer<typeof academicEventSchema>
+
+export const downloadDocumentSchema = z.object({
+  title: z.string().min(3, 'Judul wajib diisi'),
+  slug: z.string().optional(),
+  description: z.string().optional(),
+  filePath: z.string().min(1, 'File wajib diisi'),
+  category: z.string().optional(),
+  isPublished: z.boolean(),
+  order: z.number().int().min(0).optional(),
+})
+
+export type DownloadDocumentFormData = z.infer<typeof downloadDocumentSchema>
+
+export const faqSchema = z.object({
+  question: z.string().min(5, 'Pertanyaan wajib diisi'),
+  answer: z.string().min(5, 'Jawaban wajib diisi'),
+  category: z.string().optional(),
+  isPublished: z.boolean(),
+  order: z.number().int().min(0).optional(),
+})
+
+export type FaqFormData = z.infer<typeof faqSchema>
+
+export const extracurricularSchema = z.object({
+  title: z.string().min(3, 'Judul wajib diisi'),
+  slug: z.string().optional(),
+  description: z.string().optional(),
+  image: z.string().optional(),
+  schedule: z.string().optional(),
+  coach: z.string().optional(),
+  members: z.array(z.string()).optional(),
+  isPublished: z.boolean(),
+  order: z.number().int().min(0).optional(),
+})
+
+export type ExtracurricularFormData = z.infer<typeof extracurricularSchema>
+
+export const ppdbStatusSchema = z.object({
+  status: z.enum(['pending', 'approved', 'rejected']),
+  adminNotes: z.string().optional(),
+})
+
+export type PpdbStatusFormData = z.infer<typeof ppdbStatusSchema>
+
+export const ppdbSubmitSchema = z.object({
+  studentName: z.string().min(2, 'Nama siswa wajib diisi'),
+  birthDate: z.string().optional(),
+  gender: z.string().optional(),
+  parentName: z.string().min(2, 'Nama orang tua wajib diisi'),
+  parentPhone: z.string().min(8, 'Nomor telepon wajib diisi'),
+  parentEmail: z.email('Email tidak valid').optional().or(z.literal('')),
+  address: z.string().optional(),
+  previousSchool: z.string().optional(),
+})
+
+export type PpdbSubmitFormData = z.infer<typeof ppdbSubmitSchema>
+
+export const webhookSchema = z.object({
+  name: z.string().min(2, 'Nama wajib diisi'),
+  url: z.url('URL tidak valid'),
+  events: z.array(z.string()).min(1, 'Minimal 1 event'),
+  secret: z.string().optional(),
+  isActive: z.boolean(),
+})
+
+export type WebhookFormData = z.infer<typeof webhookSchema>
+
+export const apiTokenSchema = z.object({
+  name: z.string().min(2, 'Nama wajib diisi'),
+  abilities: z.array(z.string()).optional(),
+  isActive: z.boolean(),
+})
+
+export type ApiTokenFormData = z.infer<typeof apiTokenSchema>
+
+export const tenantSchema = z.object({
+  name: z.string().min(2, 'Nama wajib diisi'),
+  slug: z.string().optional(),
+  domain: z.string().optional(),
+  isActive: z.boolean(),
+})
+
+export type TenantFormData = z.infer<typeof tenantSchema>
+
+export const newsletterSubscribeSchema = z.object({
+  email: z.email('Email tidak valid'),
+  name: z.string().optional(),
+})
+
+export type NewsletterSubscribeFormData = z.infer<typeof newsletterSubscribeSchema>
+
+export const testimonialSubmitSchema = z.object({
+  name: z.string().min(2, 'Nama wajib diisi'),
+  occupation: z.string().optional(),
+  rating: z.number().int().min(1).max(5),
+  comment: z.string().min(10, 'Testimoni minimal 10 karakter'),
+  submitterEmail: z.email('Email tidak valid').optional().or(z.literal('')),
+})
+
+export type TestimonialSubmitFormData = z.infer<typeof testimonialSubmitSchema>

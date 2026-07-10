@@ -24,6 +24,8 @@ export const defaultPublicNavTree: PublicNavItem[] = [
     children: [
       { id: 'guru', label: 'Guru', href: '/guru' },
       { id: 'kegiatan', label: 'Kegiatan', href: '/kegiatan' },
+      { id: 'ekstrakurikuler', label: 'Ekstrakurikuler', href: '/ekstrakurikuler' },
+      { id: 'kalender', label: 'Kalender Akademik', href: '/kalender-akademik' },
     ],
   },
   {
@@ -33,6 +35,9 @@ export const defaultPublicNavTree: PublicNavItem[] = [
       { id: 'agenda', label: 'Agenda', href: '/agenda' },
       { id: 'berita', label: 'Berita', href: '/berita' },
       { id: 'galeri', label: 'Galeri', href: '/galeri' },
+      { id: 'faq', label: 'FAQ', href: '/faq' },
+      { id: 'unduhan', label: 'Unduhan', href: '/unduhan' },
+      { id: 'ppdb', label: 'PPDB', href: '/ppdb' },
     ],
   },
   {

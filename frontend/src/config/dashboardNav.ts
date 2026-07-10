@@ -6,6 +6,8 @@ import {
   Eye,
   FolderOpen,
   GraduationCap,
+  HardDrive,
+  HelpCircle,
   Image,
   LayoutDashboard,
   Link2,
@@ -20,6 +22,12 @@ import {
   Trophy,
   Users,
   Mail,
+  ClipboardList,
+  BarChart3,
+  Webhook,
+  Key,
+  Download,
+  FileText,
 } from 'lucide-react'
 
 export interface DashboardNavItem {
@@ -50,6 +58,20 @@ export const dashboardNavTree: DashboardNavItem[] = [
       { id: 'facilities', label: 'Fasilitas', href: '/dashboard/facilities', icon: Building2 },
       { id: 'achievements', label: 'Prestasi', href: '/dashboard/achievements', icon: Trophy },
       { id: 'news', label: 'Berita', href: '/dashboard/news', icon: Newspaper },
+      { id: 'custom-pages', label: 'Halaman Kustom', href: '/dashboard/custom-pages', icon: FileText },
+      { id: 'academic-events', label: 'Kalender Akademik', href: '/dashboard/academic-events', icon: Calendar },
+      { id: 'downloads', label: 'Download', href: '/dashboard/downloads', icon: Download },
+      { id: 'faqs', label: 'FAQ', href: '/dashboard/faqs', icon: HelpCircle },
+      { id: 'extracurriculars', label: 'Ekstrakurikuler', href: '/dashboard/extracurriculars', icon: Sparkles },
+    ],
+  },
+  {
+    id: 'services',
+    label: 'Layanan',
+    icon: ClipboardList,
+    children: [
+      { id: 'ppdb', label: 'PPDB', href: '/dashboard/ppdb', icon: GraduationCap },
+      { id: 'newsletter', label: 'Newsletter', href: '/dashboard/newsletter', icon: Mail },
     ],
   },
   {
@@ -85,6 +107,19 @@ export const dashboardNavTree: DashboardNavItem[] = [
       { id: 'users', label: 'Pengguna', href: '/dashboard/users', icon: Users },
       { id: 'roles', label: 'Role & Akses', href: '/dashboard/roles', icon: Shield },
       { id: 'contacts', label: 'Pesan Kontak', href: '/dashboard/contacts', icon: Mail },
+      { id: 'audit', label: 'Audit Log', href: '/dashboard/audit', icon: Eye },
+      { id: 'analytics', label: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
+    ],
+  },
+  {
+    id: 'system',
+    label: 'Sistem',
+    icon: HardDrive,
+    children: [
+      { id: 'backup', label: 'Backup', href: '/dashboard/backup', icon: HardDrive },
+      { id: 'webhooks', label: 'Webhooks', href: '/dashboard/webhooks', icon: Webhook },
+      { id: 'api-tokens', label: 'API Tokens', href: '/dashboard/api-tokens', icon: Key },
+      { id: 'tenants', label: 'Tenants', href: '/dashboard/tenants', icon: Building2 },
     ],
   },
 ]

@@ -170,3 +170,67 @@ export function usePublicAchievement(slug: string) {
     enabled: Boolean(slug),
   })
 }
+
+export function usePublicCustomPagesList(params: PublicListParams) {
+  return useQuery({
+    queryKey: ['public', 'pages', 'list', params],
+    queryFn: () => fetchPublicList(endpoints.public.pages, params),
+  })
+}
+
+export function usePublicCustomPage(slug: string) {
+  return useQuery({
+    queryKey: ['public', 'pages', slug],
+    queryFn: () => fetchPublicDetail(endpoints.public.pageDetail(slug)),
+    enabled: Boolean(slug),
+  })
+}
+
+export function usePublicFaqsList(params: PublicListParams) {
+  return useQuery({
+    queryKey: ['public', 'faqs', 'list', params],
+    queryFn: () => fetchPublicList(endpoints.public.faqs, params),
+  })
+}
+
+export function usePublicDownloadsList(params: PublicListParams) {
+  return useQuery({
+    queryKey: ['public', 'downloads', 'list', params],
+    queryFn: () => fetchPublicList(endpoints.public.downloads, params),
+  })
+}
+
+export function usePublicAcademicEventsList(params: PublicListParams) {
+  return useQuery({
+    queryKey: ['public', 'academic-events', 'list', params],
+    queryFn: () => fetchPublicList(endpoints.public.academicEvents, params),
+  })
+}
+
+export function usePublicExtracurricularsList(params: PublicListParams) {
+  return useQuery({
+    queryKey: ['public', 'extracurriculars', 'list', params],
+    queryFn: () => fetchPublicList(endpoints.public.extracurriculars, params),
+  })
+}
+
+export function usePublicExtracurricular(slug: string) {
+  return useQuery({
+    queryKey: ['public', 'extracurriculars', slug],
+    queryFn: () => fetchPublicDetail(endpoints.public.extracurricularDetail(slug)),
+    enabled: Boolean(slug),
+  })
+}
+
+export function usePublicPreview(token: string) {
+  return useQuery({
+    queryKey: ['public', 'preview', token],
+    queryFn: async () => {
+      const response = await apiClient.get<
+        ApiResponse<{ type: string; item: ApiRecord }>
+      >(endpoints.public.preview(token))
+      return response.data.data
+    },
+    enabled: Boolean(token),
+  })
+}

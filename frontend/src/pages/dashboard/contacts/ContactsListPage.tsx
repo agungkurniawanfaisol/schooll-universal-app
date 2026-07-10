@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { apiClient } from '@/api/client'
 import { endpoints } from '@/api/endpoints'
 import { type ApiRecord } from '@/api/utils'
+import { BackButton } from '@/components/common/BackButton'
 import { ConfirmDialog } from '@/components/common/ConfirmDialog'
 import { DataTable, type DataTableColumn } from '@/components/common/DataTable'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
@@ -143,6 +144,8 @@ export function ContactsListPage() {
       <div className="space-y-6">
         <PageHeader
           title="Pesan Kontak"
+          backTo="/dashboard"
+          backLabel="Kembali ke Dashboard"
           description="Kelola pesan dari formulir kontak website"
           breadcrumbs={[
             { label: 'Dashboard', href: '/dashboard' },
@@ -177,9 +180,7 @@ export function ContactsListPage() {
                   <h3 className="text-lg font-semibold">{selected.title}</h3>
                   <p className="text-sm text-muted-foreground">{selected.email}</p>
                 </div>
-                <Button variant="outline" size="sm" onClick={() => setSelected(null)}>
-                  Tutup
-                </Button>
+                <BackButton label="Kembali ke Daftar" onBack={() => setSelected(null)} />
               </div>
               <p className="text-sm font-medium">{selected.subject}</p>
               <p className="whitespace-pre-wrap text-sm text-muted-foreground">{selected.message}</p>

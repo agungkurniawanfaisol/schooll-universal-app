@@ -10,6 +10,7 @@ import { SectionHeader } from '@/features/landing/SectionHeader'
 import { SectionReadMoreLink } from '@/features/landing/SectionReadMoreLink'
 import { useLandingContext } from '@/features/landing/LandingDataContext'
 import { fadeUp, springSoft, viewportOnce } from '@/lib/motion'
+import { TestimonialSubmitForm } from '@/components/public/TestimonialSubmitForm'
 
 export function TestimonialsSection() {
   const { data } = useLandingContext()
@@ -69,6 +70,10 @@ export function TestimonialsSection() {
       </motion.div>
 
       <SectionReadMoreLink to="/testimoni" label="Lihat semua testimoni" />
+
+      <div className="mx-auto mt-12 max-w-xl">
+        <TestimonialSubmitForm />
+      </div>
     </LandingSection>
   )
 }

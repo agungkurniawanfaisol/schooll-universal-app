@@ -19,11 +19,20 @@ export function parseSettingUrl(value: unknown, fallback = ''): string {
   return fallback
 }
 
+export function parseSettingBoolean(value: unknown, fallback = false): boolean {
+  if (typeof value === 'boolean') return value
+  if (value && typeof value === 'object' && 'enabled' in value) {
+    return Boolean((value as { enabled: unknown }).enabled)
+  }
+  return fallback
+}
+
 export function mapWebsiteSettings(items: ApiRecord[]): {
   schoolName: string
   schoolTagline: string
   schoolLogo: string
   ppdbUrl: string
+  splashScreenEnabled: boolean
   heroStats: HeroStat[]
 } {
   const byKey = Object.fromEntries(items.map((item) => [String(item.key), item.value]))
@@ -34,6 +43,7 @@ export function mapWebsiteSettings(items: ApiRecord[]): {
     schoolTagline: parseSettingText(byKey.school_tagline),
     schoolLogo: parseSettingUrl(byKey.school_logo),
     ppdbUrl: parseSettingUrl(byKey.ppdb_url),
+    splashScreenEnabled: parseSettingBoolean(byKey.splash_screen_enabled, true),
     heroStats: stats?.length
       ? stats
       : [

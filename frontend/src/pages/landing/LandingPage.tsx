@@ -1,11 +1,15 @@
 import { SEOHead } from '@/components/common/SEOHead'
 import { useLandingContext } from '@/features/landing/LandingDataContext'
+import { LandingSplashScreen } from '@/features/landing/LandingSplashScreen'
 import { AboutSection } from '@/pages/landing/sections/AboutSection'
+import { AcademicCalendarSection } from '@/pages/landing/sections/AcademicCalendarSection'
 import { AchievementsSection } from '@/pages/landing/sections/AchievementsSection'
 import { ActivitiesSection } from '@/pages/landing/sections/ActivitiesSection'
 import { AgendaSection } from '@/pages/landing/sections/AgendaSection'
 import { ContactSection } from '@/pages/landing/sections/ContactSection'
+import { ExtracurricularSection } from '@/pages/landing/sections/ExtracurricularSection'
 import { FacilitiesSection } from '@/pages/landing/sections/FacilitiesSection'
+import { FaqSection } from '@/pages/landing/sections/FaqSection'
 import { GallerySection } from '@/pages/landing/sections/GallerySection'
 import { HeroSection } from '@/pages/landing/sections/HeroSection'
 import { NewsSection } from '@/pages/landing/sections/NewsSection'
@@ -20,6 +24,7 @@ export function LandingPage() {
 
   return (
     <>
+      <LandingSplashScreen />
       <SEOHead
         description={seo?.description ? String(seo.description) : settings.schoolTagline}
         ogTitle={seo?.title ? String(seo.title) : undefined}
@@ -45,6 +50,9 @@ export function LandingPage() {
       <FacilitiesSection />
       <AchievementsSection />
       <NewsSection />
+      <FaqSection />
+      <ExtracurricularSection />
+      <AcademicCalendarSection />
       <ContactSection />
     </>
   )

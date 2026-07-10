@@ -1,15 +1,23 @@
 import { isPublishedStatus, publishStatus, toId, type ApiRecord } from '@/api/utils'
 import type { User } from '@/types/auth'
 import type {
+  AcademicEventFormData,
   AchievementFormData,
   ActivityFormData,
   AgendaFormData,
+  ApiTokenFormData,
+  CustomPageFormData,
+  DownloadDocumentFormData,
+  ExtracurricularFormData,
   FacilityFormData,
+  FaqFormData,
   GalleryFormData,
   NewsFormData,
   TeacherFormData,
+  TenantFormData,
   TestimonialFormData,
   UserFormData,
+  WebhookFormData,
 } from '@/validators/cms'
 
 export interface ListRow {
@@ -57,6 +65,32 @@ export const mapActivityListRow = (item: ApiRecord) => baseListRow(item)
 export const mapFacilityListRow = (item: ApiRecord) => baseListRow(item)
 export const mapAchievementListRow = (item: ApiRecord) => baseListRow(item)
 export const mapNewsListRow = (item: ApiRecord) => baseListRow(item)
+export const mapCustomPageListRow = (item: ApiRecord) => baseListRow(item)
+export const mapAcademicEventListRow = (item: ApiRecord) => baseListRow(item)
+export const mapDownloadDocumentListRow = (item: ApiRecord) => baseListRow(item)
+export const mapFaqListRow = (item: ApiRecord) => ({
+  ...baseListRow(item, 'question'),
+  title: String(item.question ?? '-'),
+})
+export const mapExtracurricularListRow = (item: ApiRecord) => baseListRow(item)
+export const mapWebhookListRow = (item: ApiRecord) => ({
+  id: toId(item.id),
+  title: String(item.name ?? '-'),
+  isPublished: Boolean(item.is_active),
+  createdAt: String(item.created_at ?? ''),
+})
+export const mapApiTokenListRow = (item: ApiRecord) => ({
+  id: toId(item.id),
+  title: String(item.name ?? '-'),
+  isPublished: Boolean(item.is_active),
+  createdAt: String(item.created_at ?? ''),
+})
+export const mapTenantListRow = (item: ApiRecord) => ({
+  id: toId(item.id),
+  title: String(item.name ?? '-'),
+  isPublished: Boolean(item.is_active),
+  createdAt: String(item.created_at ?? ''),
+})
 
 export function mapUserListRow(item: ApiRecord): ListRow & { email: string } {
   return {
@@ -338,5 +372,187 @@ export function userFromApi(item: ApiRecord): UserFormData {
     avatar: item.avatar ? String(item.avatar) : undefined,
     isActive: item.status === 'active',
     password: undefined,
+  }
+}
+
+export function customPageToApi(data: CustomPageFormData) {
+  return {
+    title: data.title,
+    slug: data.slug,
+    content: data.content,
+    meta_title: data.metaTitle,
+    meta_description: data.metaDescription,
+    publish_start_at: data.publishStartAt,
+    publish_end_at: data.publishEndAt || null,
+    sort_order: data.order ?? 0,
+    status: publishStatus(data.isPublished),
+  }
+}
+
+export function customPageFromApi(item: ApiRecord): CustomPageFormData {
+  return {
+    title: String(item.title ?? ''),
+    slug: item.slug ? String(item.slug) : undefined,
+    content: String(item.content ?? ''),
+    metaTitle: item.meta_title ? String(item.meta_title) : undefined,
+    metaDescription: item.meta_description ? String(item.meta_description) : undefined,
+    publishStartAt: toDatetimeLocal(item.publish_start_at),
+    publishEndAt: toDatetimeLocal(item.publish_end_at),
+    isPublished: isPublishedStatus(item.status),
+    order: Number(item.sort_order ?? 0),
+  }
+}
+
+export function academicEventToApi(data: AcademicEventFormData) {
+  return {
+    title: data.title,
+    slug: data.slug,
+    description: data.description,
+    event_type: data.eventType || 'activity',
+    start_date: data.startDate,
+    end_date: data.endDate || null,
+    color: data.color,
+    sort_order: data.order ?? 0,
+    status: publishStatus(data.isPublished),
+  }
+}
+
+export function academicEventFromApi(item: ApiRecord): AcademicEventFormData {
+  return {
+    title: String(item.title ?? ''),
+    slug: item.slug ? String(item.slug) : undefined,
+    description: item.description ? String(item.description) : undefined,
+    eventType: item.event_type ? String(item.event_type) : undefined,
+    startDate: item.start_date ? String(item.start_date) : '',
+    endDate: item.end_date ? String(item.end_date) : undefined,
+    color: item.color ? String(item.color) : undefined,
+    isPublished: isPublishedStatus(item.status),
+    order: Number(item.sort_order ?? 0),
+  }
+}
+
+export function downloadDocumentToApi(data: DownloadDocumentFormData) {
+  return {
+    title: data.title,
+    slug: data.slug,
+    description: data.description,
+    file_path: data.filePath,
+    category: data.category || 'general',
+    sort_order: data.order ?? 0,
+    status: publishStatus(data.isPublished),
+  }
+}
+
+export function downloadDocumentFromApi(item: ApiRecord): DownloadDocumentFormData {
+  return {
+    title: String(item.title ?? ''),
+    slug: item.slug ? String(item.slug) : undefined,
+    description: item.description ? String(item.description) : undefined,
+    filePath: String(item.file_path ?? item.file_url ?? ''),
+    category: item.category ? String(item.category) : undefined,
+    isPublished: isPublishedStatus(item.status),
+    order: Number(item.sort_order ?? 0),
+  }
+}
+
+export function faqToApi(data: FaqFormData) {
+  return {
+    question: data.question,
+    answer: data.answer,
+    category: data.category || 'general',
+    sort_order: data.order ?? 0,
+    status: publishStatus(data.isPublished),
+  }
+}
+
+export function faqFromApi(item: ApiRecord): FaqFormData {
+  return {
+    question: String(item.question ?? ''),
+    answer: String(item.answer ?? ''),
+    category: item.category ? String(item.category) : undefined,
+    isPublished: isPublishedStatus(item.status),
+    order: Number(item.sort_order ?? 0),
+  }
+}
+
+export function extracurricularToApi(data: ExtracurricularFormData) {
+  return {
+    title: data.title,
+    slug: data.slug,
+    description: data.description,
+    image: data.image,
+    schedule: data.schedule,
+    coach: data.coach,
+    members: data.members,
+    sort_order: data.order ?? 0,
+    status: publishStatus(data.isPublished),
+  }
+}
+
+export function extracurricularFromApi(item: ApiRecord): ExtracurricularFormData {
+  return {
+    title: String(item.title ?? ''),
+    slug: item.slug ? String(item.slug) : undefined,
+    description: item.description ? String(item.description) : undefined,
+    image: item.image ? String(item.image) : item.image_url ? String(item.image_url) : undefined,
+    schedule: item.schedule ? String(item.schedule) : undefined,
+    coach: item.coach ? String(item.coach) : undefined,
+    members: (item.members as string[] | undefined) ?? [],
+    isPublished: isPublishedStatus(item.status),
+    order: Number(item.sort_order ?? 0),
+  }
+}
+
+export function webhookToApi(data: WebhookFormData) {
+  return {
+    name: data.name,
+    url: data.url,
+    events: data.events,
+    secret: data.secret,
+    is_active: data.isActive,
+  }
+}
+
+export function webhookFromApi(item: ApiRecord): WebhookFormData {
+  return {
+    name: String(item.name ?? ''),
+    url: String(item.url ?? ''),
+    events: (item.events as string[] | undefined) ?? [],
+    secret: item.secret ? String(item.secret) : undefined,
+    isActive: Boolean(item.is_active),
+  }
+}
+
+export function apiTokenToApi(data: ApiTokenFormData) {
+  return {
+    name: data.name,
+    abilities: data.abilities,
+    is_active: data.isActive,
+  }
+}
+
+export function apiTokenFromApi(item: ApiRecord): ApiTokenFormData {
+  return {
+    name: String(item.name ?? ''),
+    abilities: (item.abilities as string[] | undefined) ?? [],
+    isActive: Boolean(item.is_active),
+  }
+}
+
+export function tenantToApi(data: TenantFormData) {
+  return {
+    name: data.name,
+    slug: data.slug,
+    domain: data.domain,
+    is_active: data.isActive,
+  }
+}
+
+export function tenantFromApi(item: ApiRecord): TenantFormData {
+  return {
+    name: String(item.name ?? ''),
+    slug: item.slug ? String(item.slug) : undefined,
+    domain: item.domain ? String(item.domain) : undefined,
+    isActive: Boolean(item.is_active),
   }
 }

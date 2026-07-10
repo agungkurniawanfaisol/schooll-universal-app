@@ -17,6 +17,7 @@ import { useLandingContext } from '@/features/landing/LandingDataContext'
 import { useNotificationStore } from '@/stores/notificationStore'
 import { fadeInLeft, fadeInRight, springSoft, viewportOnce } from '@/lib/motion'
 import { contactFormSchema, type ContactFormData } from '@/validators/cms'
+import { NewsletterSubscribeForm } from '@/components/public/NewsletterSubscribeForm'
 
 const iconMap = {
   'map-pin': MapPin,
@@ -146,6 +147,11 @@ export function ContactSection() {
             </p>
           ) : null}
         </motion.form>
+
+        <div className="glass-card mt-8 p-6 shadow-soft lg:col-span-2">
+          <h3 className="mb-4 text-lg font-semibold">Berlangganan Newsletter</h3>
+          <NewsletterSubscribeForm />
+        </div>
       </div>
     </LandingSection>
   )
