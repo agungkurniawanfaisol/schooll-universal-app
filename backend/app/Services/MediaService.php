@@ -55,7 +55,7 @@ class MediaService
         $outputMaxWidth = (int) config('media.output_max_width', 1920);
         $outputQuality = (int) config('media.output_quality', 85);
 
-        $encoded = $image->scaleDown(width: $outputMaxWidth)->toJpeg(quality: $outputQuality);
+        $encoded = $image->scaleDown(width: $outputMaxWidth)->toJpeg(quality: $outputQuality, strip: true);
         Storage::disk($disk)->put($path, (string) $encoded);
 
         return $this->mediaRepository->create([
