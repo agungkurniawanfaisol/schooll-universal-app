@@ -90,7 +90,7 @@ Dashboard CRUD, media manager, landing page, and all Pengaturan pages read/write
 - [ ] Excel export/import UI
 - [ ] Profile page
 - [ ] Contact submissions admin list page
-- [ ] Tests (Vitest frontend, PHPUnit backend)
+- [x] Tests (Vitest frontend, Pest backend)
 
 ### SEO
 

@@ -87,7 +87,26 @@ npm run dev          # start dev server (keep running)
 npm run typecheck    # check TypeScript
 npm run lint         # lint code
 npm run build        # production build
+npm test             # Vitest unit tests
 ```
+
+### Testing
+
+```bash
+# Backend (Pest + PHPUnit) — Docker
+docker compose exec backend php artisan test
+
+# Backend — local
+cd backend && php artisan test
+
+# Frontend unit tests (Vitest)
+cd frontend && npm test
+
+# Frontend E2E (Playwright — stack must be running)
+cd frontend && npm run test:e2e
+```
+
+CI runs backend and frontend unit tests on push/PR via [`.github/workflows/test.yml`](.github/workflows/test.yml).
 
 Point `VITE_API_URL` in `.env` to your running API (e.g. `http://localhost:8080/api/v1` when using Docker, or `http://localhost:8000/api/v1` with `php artisan serve`).
 
