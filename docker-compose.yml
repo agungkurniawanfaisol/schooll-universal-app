@@ -36,13 +36,17 @@ services:
       DB_DATABASE: ${DB_DATABASE:-sekolah_cms}
       DB_USERNAME: ${DB_USERNAME:-sekolah}
       DB_PASSWORD: ${DB_PASSWORD:-secret}
-      CACHE_STORE: file
-      QUEUE_CONNECTION: database
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      CACHE_STORE: ${CACHE_STORE:-file}
+      QUEUE_CONNECTION: ${QUEUE_CONNECTION:-database}
       SESSION_DRIVER: file
       MAIL_HOST: mailpit
       MAIL_PORT: 1025
     depends_on:
       mysql:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     networks:
       - sekolah-network
@@ -59,6 +63,49 @@ services:
         php artisan migrate --force --no-interaction 2>/dev/null || true &&
         php artisan serve --host=0.0.0.0 --port=8000
       "
+
+  queue:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: sekolah-queue
+    working_dir: /var/www/backend
+    volumes:
+      - ./backend:/var/www/backend
+      - vendor_data:/var/www/backend/vendor
+    environment:
+      APP_ENV: ${APP_ENV:-local}
+      DB_HOST: mysql
+      DB_DATABASE: ${DB_DATABASE:-sekolah_cms}
+      DB_USERNAME: ${DB_USERNAME:-sekolah}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+      REDIS_HOST: redis
+      QUEUE_CONNECTION: ${QUEUE_CONNECTION:-database}
+    depends_on:
+      backend:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    networks:
+      - sekolah-network
+    command: >
+      sh -c "
+        if [ ! -f vendor/autoload.php ]; then composer install --no-interaction --prefer-dist; fi &&
+        php artisan queue:work --sleep=3 --tries=3 --timeout=90
+      "
+
+  redis:
+    image: redis:7-alpine
+    container_name: sekolah-redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    networks:
+      - sekolah-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   frontend:
     build:
