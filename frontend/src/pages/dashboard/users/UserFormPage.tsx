@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { endpoints } from '@/api/endpoints'
 import { userFromApi, userToApi } from '@/api/mappers'
+import { ImageUploader } from '@/components/common/ImageUploader'
 import { LoadingSpinner } from '@/components/common/LoadingSpinner'
 import { PageHeader } from '@/components/common/PageHeader'
 import { SEOHead } from '@/components/common/SEOHead'
@@ -21,6 +22,7 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { useRolesList } from '@/hooks/useApiQueries'
+import { uploadMediaFile } from '@/hooks/useMediaUpload'
 import { useResourceDetail, useResourceMutation } from '@/hooks/usePaginatedList'
 import { useNotificationStore } from '@/stores/notificationStore'
 import { userSchema, type UserFormData } from '@/validators/cms'
@@ -48,7 +50,7 @@ export function UserFormPage() {
     formState: { errors, isSubmitting },
   } = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
-    defaultValues: { isActive: true, name: '', email: '', roleId: '' },
+    defaultValues: { isActive: true, name: '', email: '', roleId: '', avatar: '' },
   })
 
   useEffect(() => {
@@ -63,6 +65,7 @@ export function UserFormPage() {
   })
 
   const isActive = watch('isActive')
+  const avatar = watch('avatar')
 
   const onSubmit = async (formData: UserFormData) => {
     await mutation.mutateAsync({ id, data: formData })
@@ -112,6 +115,15 @@ export function UserFormPage() {
                   )}
                 </div>
               )}
+              <div className="space-y-2">
+                <Label>Avatar</Label>
+                <ImageUploader
+                  value={avatar}
+                  onChange={(url) => setValue('avatar', url, { shouldValidate: true })}
+                  onUpload={uploadMediaFile}
+                  label="Upload foto profil"
+                />
+              </div>
               <div className="space-y-2">
                 <Label>Role</Label>
                 <Select

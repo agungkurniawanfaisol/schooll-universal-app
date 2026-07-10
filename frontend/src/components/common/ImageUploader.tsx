@@ -2,6 +2,12 @@ import { ImagePlus, Upload, X } from 'lucide-react'
 import { useCallback, useRef, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import {
+  UPLOAD_ACCEPT,
+  UPLOAD_HINT,
+  UPLOAD_MAX_SIZE_MB,
+  isAllowedUploadFile,
+} from '@/config/upload'
 import { cn } from '@/lib/utils'
 
 interface ImageUploaderProps {
@@ -18,8 +24,8 @@ export function ImageUploader({
   value,
   onChange,
   onUpload,
-  accept = 'image/*',
-  maxSizeMB = 5,
+  accept = UPLOAD_ACCEPT,
+  maxSizeMB = UPLOAD_MAX_SIZE_MB,
   className,
   label = 'Upload gambar',
 }: ImageUploaderProps) {
@@ -28,14 +34,18 @@ export function ImageUploader({
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const maxBytes = maxSizeMB * 1024 * 1024
+
   const handleFile = useCallback(
     async (file: File) => {
       setError(null)
-      if (!file.type.startsWith('image/')) {
-        setError('File harus berupa gambar')
+
+      if (!isAllowedUploadFile(file)) {
+        setError('Format tidak didukung. Gunakan JPG, PNG, atau WEBP.')
         return
       }
-      if (file.size > maxSizeMB * 1024 * 1024) {
+
+      if (file.size > maxBytes) {
         setError(`Ukuran maksimal ${maxSizeMB}MB`)
         return
       }
@@ -58,7 +68,7 @@ export function ImageUploader({
         reader.readAsDataURL(file)
       }
     },
-    [maxSizeMB, onChange, onUpload],
+    [maxBytes, maxSizeMB, onChange, onUpload],
   )
 
   const onDrop = useCallback(
@@ -113,9 +123,7 @@ export function ImageUploader({
             <ImagePlus className="h-10 w-10 text-muted-foreground" />
           )}
           <p className="mt-3 text-sm font-medium">{label}</p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Seret & lepas atau klik untuk memilih (max {maxSizeMB}MB)
-          </p>
+          <p className="mt-1 text-xs text-muted-foreground">{UPLOAD_HINT}</p>
         </div>
       )}
       <input
@@ -126,6 +134,7 @@ export function ImageUploader({
         onChange={(e) => {
           const file = e.target.files?.[0]
           if (file) void handleFile(file)
+          e.target.value = ''
         }}
       />
       {error && <p className="text-sm text-destructive">{error}</p>}

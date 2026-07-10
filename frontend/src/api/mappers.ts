@@ -168,22 +168,28 @@ export function agendaFromApi(item: ApiRecord): AgendaFormData {
 }
 
 export function galleryToApi(data: GalleryFormData) {
+  const album = (data.albumImages ?? []).filter((url) => url && url !== data.coverImage)
+
   return {
     title: data.title,
     description: data.description,
-    cover_image: data.imageUrl,
-    images: data.imageUrl ? [data.imageUrl] : [],
+    cover_image: data.coverImage,
+    images: album.length ? album : data.coverImage ? [data.coverImage] : [],
     sort_order: data.order ?? 0,
     status: publishStatus(data.isPublished),
   }
 }
 
 export function galleryFromApi(item: ApiRecord): GalleryFormData {
-  const images = item.images as string[] | undefined
+  const images = (item.images as string[] | undefined) ?? []
+  const cover = String(item.cover_image ?? images[0] ?? '')
+  const albumImages = images.filter((url) => url !== cover)
+
   return {
     title: String(item.title ?? ''),
     description: item.description ? String(item.description) : undefined,
-    imageUrl: String(item.cover_image ?? images?.[0] ?? ''),
+    coverImage: cover,
+    albumImages,
     category: 'general',
     isPublished: isPublishedStatus(item.status),
     order: Number(item.sort_order ?? 0),
@@ -317,6 +323,7 @@ export function userToApi(data: UserFormData, roleName?: string) {
     name: data.name,
     email: data.email,
     password: data.password,
+    avatar: data.avatar || undefined,
     status: data.isActive ? 'active' : 'inactive',
     roles: roleName ? [roleName] : undefined,
   }
@@ -328,6 +335,7 @@ export function userFromApi(item: ApiRecord): UserFormData {
     name: String(item.name ?? ''),
     email: String(item.email ?? ''),
     roleId: roles?.[0] ?? '',
+    avatar: item.avatar ? String(item.avatar) : undefined,
     isActive: item.status === 'active',
     password: undefined,
   }

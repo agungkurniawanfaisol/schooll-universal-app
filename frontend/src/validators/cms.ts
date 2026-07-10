@@ -12,6 +12,7 @@ export const userSchema = z.object({
   email: z.email('Email tidak valid'),
   password: z.string().min(6, 'Password minimal 6 karakter').optional(),
   roleId: z.string().min(1, 'Role wajib dipilih'),
+  avatar: z.string().optional(),
   isActive: z.boolean(),
 })
 
@@ -58,7 +59,8 @@ export type AgendaFormData = z.infer<typeof agendaSchema>
 export const gallerySchema = z.object({
   title: z.string().min(2, 'Judul wajib diisi'),
   description: z.string().optional(),
-  imageUrl: z.string().min(1, 'Gambar wajib diupload'),
+  coverImage: z.string().min(1, 'Foto cover wajib diupload'),
+  albumImages: z.array(z.string()).max(20, 'Maksimal 20 foto album').optional(),
   category: z.string().min(1, 'Kategori wajib diisi'),
   isPublished: z.boolean(),
   order: z.number().int().min(0).optional(),

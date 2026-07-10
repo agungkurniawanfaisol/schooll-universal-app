@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 import { ImageUploader } from '@/components/common/ImageUploader'
 import { SettingsPageShell } from '@/components/settings/SettingsPageShell'
+import { UPLOAD_ACCEPT, UPLOAD_MAX_SIZE_MB } from '@/config/upload'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -110,6 +111,8 @@ export function HeroSettingsPage() {
             value={String(draft.background_image ?? '')}
             onChange={(url) => setField({ background_image: url })}
             onUpload={uploadMediaFile}
+            accept={UPLOAD_ACCEPT}
+            maxSizeMB={UPLOAD_MAX_SIZE_MB}
           />
         </div>
         <div className="flex gap-2">
