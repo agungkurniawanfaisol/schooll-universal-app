@@ -17,7 +17,7 @@ class UpdateTestimonialRequest extends FormRequest
         return [
             'name' => 'sometimes|string|max:255',
             'occupation' => 'nullable|string|max:255',
-            'photo' => ['nullable', 'string', 'max:500', new SafeMediaUrl],
+            'photo' => ['nullable', 'string', 'max:500', new SafeMediaUrl($this->route('testimonial')?->photo)],
             'rating' => 'nullable|integer|min:1|max:5',
             'comment' => 'sometimes|string',
             'sort_order' => 'nullable|integer',

@@ -20,7 +20,7 @@ class UpdateTeacherRequest extends FormRequest
             'position' => 'nullable|string|max:255',
             'subject' => 'nullable|string|max:255',
             'biography' => 'nullable|string',
-            'photo' => ['nullable', 'string', 'max:500', new SafeMediaUrl],
+            'photo' => ['nullable', 'string', 'max:500', new SafeMediaUrl($this->route('teacher')?->photo)],
             'social_media' => 'nullable|array',
             'sort_order' => 'nullable|integer|min:0',
             'status' => 'sometimes|in:draft,published,archived',

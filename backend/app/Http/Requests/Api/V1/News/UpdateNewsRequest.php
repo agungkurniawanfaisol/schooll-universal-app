@@ -19,7 +19,7 @@ class UpdateNewsRequest extends FormRequest
             'slug' => 'nullable|string|max:255',
             'excerpt' => 'nullable|string',
             'content' => 'nullable|string',
-            'thumbnail' => ['nullable', 'string', 'max:500', new SafeMediaUrl],
+            'thumbnail' => ['nullable', 'string', 'max:500', new SafeMediaUrl($this->route('news')?->thumbnail)],
             'published_at' => 'nullable|date',
             'publish_start_at' => 'nullable|date',
             'publish_end_at' => 'nullable|date|after_or_equal:publish_start_at',

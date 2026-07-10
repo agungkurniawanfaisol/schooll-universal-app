@@ -18,7 +18,7 @@ class UpdateAchievementRequest extends FormRequest
             'title' => 'sometimes|string|max:255',
             'slug' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image' => ['nullable', 'string', 'max:500', new SafeMediaUrl],
+            'image' => ['nullable', 'string', 'max:500', new SafeMediaUrl($this->route('achievement')?->image)],
             'year' => 'nullable|integer|min:1900|max:2100',
             'category' => 'nullable|string|max:100',
             'sort_order' => 'nullable|integer',

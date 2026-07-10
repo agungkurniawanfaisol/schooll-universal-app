@@ -18,7 +18,7 @@ class UpdateFacilityRequest extends FormRequest
             'title' => 'sometimes|string|max:255',
             'slug' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image' => ['nullable', 'string', 'max:500', new SafeMediaUrl],
+            'image' => ['nullable', 'string', 'max:500', new SafeMediaUrl($this->route('facility')?->image)],
             'icon' => 'nullable|string|max:100',
             'sort_order' => 'nullable|integer',
             'status' => 'sometimes|in:draft,published,archived',

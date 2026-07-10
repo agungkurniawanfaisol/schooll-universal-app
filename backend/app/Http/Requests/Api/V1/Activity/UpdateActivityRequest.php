@@ -18,7 +18,7 @@ class UpdateActivityRequest extends FormRequest
             'title' => 'sometimes|string|max:255',
             'slug' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'image' => ['nullable', 'string', 'max:500', new SafeMediaUrl],
+            'image' => ['nullable', 'string', 'max:500', new SafeMediaUrl($this->route('activity')?->image)],
             'date' => 'nullable|date',
             'sort_order' => 'nullable|integer',
             'status' => 'sometimes|in:draft,published,archived',

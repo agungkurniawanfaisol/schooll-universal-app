@@ -19,7 +19,7 @@ class UpdateHeroSectionRequest extends FormRequest
             'title' => 'required|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'background_image' => ['nullable', 'string', 'max:500', new SafeMediaUrl],
+            'background_image' => ['nullable', 'string', 'max:500', new SafeMediaUrl($this->route('heroSection')?->background_image)],
             'cta_text' => 'nullable|string|max:100',
             'cta_url' => ['nullable', 'string', 'max:500', new SafeUrl],
             'status' => 'nullable|in:draft,published,archived',

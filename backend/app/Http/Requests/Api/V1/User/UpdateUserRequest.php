@@ -19,7 +19,7 @@ class UpdateUserRequest extends FormRequest
             'name' => 'sometimes|string|max:255',
             'email' => 'sometimes|email',
             'password' => 'nullable|string|min:8',
-            'avatar' => ['nullable', 'string', 'max:500', new SafeMediaUrl],
+            'avatar' => ['nullable', 'string', 'max:500', new SafeMediaUrl($this->route('user')?->avatar)],
             'status' => 'nullable|in:active,inactive',
             'roles' => 'nullable|array',
             'roles.*' => ['string', Rule::exists('roles', 'name')],

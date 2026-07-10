@@ -8,9 +8,15 @@ use Illuminate\Support\Facades\Storage;
 
 class SafeMediaUrl implements ValidationRule
 {
+    public function __construct(private mixed $unchanged = null) {}
+
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if ($value === null || $value === '') {
+            return;
+        }
+
+        if ($this->unchanged !== null && (string) $value === (string) $this->unchanged) {
             return;
         }
 

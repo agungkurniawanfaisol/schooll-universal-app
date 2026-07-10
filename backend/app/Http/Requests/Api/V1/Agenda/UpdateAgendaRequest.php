@@ -17,7 +17,7 @@ class UpdateAgendaRequest extends FormRequest
         return [
             'title' => 'sometimes|string|max:255',
             'slug' => 'nullable|string|max:255',
-            'thumbnail' => ['nullable', 'string', 'max:500', new SafeMediaUrl],
+            'thumbnail' => ['nullable', 'string', 'max:500', new SafeMediaUrl($this->route('agenda')?->thumbnail)],
             'date' => 'sometimes|date',
             'end_date' => 'nullable|date|after_or_equal:date',
             'time' => 'nullable',
