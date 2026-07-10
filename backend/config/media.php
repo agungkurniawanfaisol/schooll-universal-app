@@ -29,6 +29,8 @@ return [
 
     'output_max_width' => (int) env('MEDIA_OUTPUT_MAX_WIDTH', 1920),
 
+    'logo_output_max_width' => (int) env('MEDIA_LOGO_OUTPUT_MAX_WIDTH', 512),
+
     'output_quality' => (int) env('MEDIA_OUTPUT_QUALITY', 85),
 
     'max_album_images' => (int) env('MEDIA_MAX_ALBUM_IMAGES', 20),

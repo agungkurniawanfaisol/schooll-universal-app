@@ -172,4 +172,81 @@ class MediaUploadSecurityTest extends TestCase
             ->assertCreated()
             ->assertJsonPath('data.photo', $url);
     }
+
+    public function test_school_logo_setting_rejects_external_url(): void
+    {
+        $this->actingAs($this->admin, 'sanctum')
+            ->postJson('/api/v1/settings', [
+                'key' => 'school_logo',
+                'value' => ['url' => 'https://evil.example.com/logo.jpg'],
+                'group' => 'general',
+            ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['value']);
+    }
+
+    public function test_school_logo_setting_rejects_javascript_url(): void
+    {
+        $this->actingAs($this->admin, 'sanctum')
+            ->postJson('/api/v1/settings', [
+                'key' => 'school_logo',
+                'value' => ['url' => 'javascript:alert(1)'],
+                'group' => 'general',
+            ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['value']);
+    }
+
+    public function test_school_logo_setting_accepts_internal_media_url(): void
+    {
+        $upload = $this->actingAs($this->admin, 'sanctum')
+            ->postJson('/api/v1/media', [
+                'file' => $this->jpegFixture('logo.jpg'),
+                'context' => 'logo',
+            ])
+            ->assertCreated();
+
+        $url = $upload->json('data.url');
+
+        $this->actingAs($this->admin, 'sanctum')
+            ->postJson('/api/v1/settings', [
+                'key' => 'school_logo',
+                'value' => ['url' => $url],
+                'group' => 'general',
+            ])
+            ->assertCreated();
+    }
+
+    public function test_logo_upload_context_is_stored_as_jpeg(): void
+    {
+        $file = $this->pngFixture('logo.png');
+
+        $response = $this->actingAs($this->admin, 'sanctum')
+            ->postJson('/api/v1/media', [
+                'file' => $file,
+                'context' => 'logo',
+            ]);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.mime_type', 'image/jpeg');
+    }
+
+    public function test_splash_screen_setting_accepts_boolean_toggle(): void
+    {
+        $this->actingAs($this->admin, 'sanctum')
+            ->postJson('/api/v1/settings', [
+                'key' => 'splash_screen_enabled',
+                'value' => ['enabled' => false],
+                'group' => 'general',
+            ])
+            ->assertCreated();
+
+        $this->actingAs($this->admin, 'sanctum')
+            ->postJson('/api/v1/settings', [
+                'key' => 'splash_screen_enabled',
+                'value' => ['enabled' => true],
+                'group' => 'general',
+            ])
+            ->assertCreated();
+    }
 }

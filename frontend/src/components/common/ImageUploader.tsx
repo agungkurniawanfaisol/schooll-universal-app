@@ -10,7 +10,7 @@ import {
 } from '@/config/upload'
 import { cn } from '@/lib/utils'
 
-interface ImageUploaderProps {
+export interface ImageUploaderProps {
   value?: string
   onChange: (url: string) => void
   onUpload?: (file: File) => Promise<string>
@@ -18,6 +18,7 @@ interface ImageUploaderProps {
   maxSizeMB?: number
   className?: string
   label?: string
+  variant?: 'default' | 'logo'
 }
 
 export function ImageUploader({
@@ -28,6 +29,7 @@ export function ImageUploader({
   maxSizeMB = UPLOAD_MAX_SIZE_MB,
   className,
   label = 'Upload gambar',
+  variant = 'default',
 }: ImageUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [isDragging, setIsDragging] = useState(false)
@@ -85,7 +87,16 @@ export function ImageUploader({
     <div className={cn('space-y-2', className)}>
       {value ? (
         <div className="relative overflow-hidden rounded-2xl border border-border">
-          <img src={value} alt="Preview" className="aspect-video w-full object-cover" />
+          <img
+            src={value}
+            alt="Preview"
+            className={cn(
+              'w-full',
+              variant === 'logo'
+                ? 'aspect-square max-h-48 bg-muted/30 object-contain p-4'
+                : 'aspect-video object-cover',
+            )}
+          />
           <Button
             type="button"
             variant="destructive"

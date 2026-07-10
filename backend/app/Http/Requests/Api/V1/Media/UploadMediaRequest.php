@@ -25,6 +25,7 @@ class UploadMediaRequest extends FormRequest
                     ->max($maxKb),
             ],
             'alt_text' => 'nullable|string|max:255',
+            'context' => 'nullable|string|in:default,logo',
         ];
     }
 }

@@ -8,6 +8,8 @@ export const UPLOAD_ACCEPT = 'image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.w
 
 export const UPLOAD_HINT = `JPG, PNG, WEBP — maks. ${UPLOAD_MAX_SIZE_MB} MB`
 
+export const LOGO_UPLOAD_HINT = `Logo persegi direkomendasikan — JPG, PNG, WEBP — maks. ${UPLOAD_MAX_SIZE_MB} MB`
+
 export const UPLOAD_MAX_ALBUM_ITEMS = 20
 
 export function isAllowedUploadFile(file: File): boolean {

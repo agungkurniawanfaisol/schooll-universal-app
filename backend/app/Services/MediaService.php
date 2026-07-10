@@ -19,8 +19,13 @@ class MediaService
         private ImageManager $imageManager = new ImageManager(new Driver()),
     ) {}
 
-    public function upload(UploadedFile $file, ?int $userId = null, ?string $altText = null, string $disk = 'public'): Media
-    {
+    public function upload(
+        UploadedFile $file,
+        ?int $userId = null,
+        ?string $altText = null,
+        string $disk = 'public',
+        string $context = 'default',
+    ): Media {
         $this->assertImageFile($file);
 
         $uuid = (string) Str::uuid();
@@ -52,7 +57,10 @@ class MediaService
             ]);
         }
 
-        $outputMaxWidth = (int) config('media.output_max_width', 1920);
+        $outputMaxWidth = match ($context) {
+            'logo' => (int) config('media.logo_output_max_width', 512),
+            default => (int) config('media.output_max_width', 1920),
+        };
         $outputQuality = (int) config('media.output_quality', 85);
 
         $encoded = $image->scaleDown(width: $outputMaxWidth)->toJpeg(quality: $outputQuality, strip: true);

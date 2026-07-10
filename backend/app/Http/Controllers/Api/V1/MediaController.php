@@ -35,6 +35,8 @@ class MediaController extends BaseApiController
             $request->file('file'),
             $request->user()->id,
             $request->input('alt_text'),
+            'public',
+            $request->input('context', 'default'),
         );
 
         return $this->created(new MediaResource($media));
