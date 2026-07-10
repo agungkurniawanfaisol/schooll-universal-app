@@ -21,7 +21,7 @@ export function DashboardLayout() {
         )}
       >
         <DashboardHeader />
-        <main className="flex-1 p-4 md:p-6">
+        <main className="scroll-smooth-touch flex-1 p-4 md:p-6">
           <Outlet />
         </main>
       </div>

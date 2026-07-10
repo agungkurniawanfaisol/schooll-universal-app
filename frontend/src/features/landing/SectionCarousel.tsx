@@ -66,7 +66,7 @@ export function SectionCarousel({ children, className, ariaLabel = 'Carousel kon
       <div
         ref={scrollRef}
         onScroll={updateScrollState}
-        className="carousel-fade-edges flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] sm:px-0 [&::-webkit-scrollbar]:hidden"
+        className="carousel-fade-edges scrollbar-hide scroll-smooth-touch flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-4 sm:px-0"
       >
         {children.map((child, i) => (
           <motion.div

@@ -10,6 +10,7 @@ import {
   isRouteLink,
   type PublicNavItem,
 } from '@/config/publicNav'
+import { handlePublicNavClick } from '@/lib/publicNavScroll'
 import { springSnappy } from '@/lib/motion'
 import { cn } from '@/lib/utils'
 
@@ -50,7 +51,11 @@ function NavAnchor({
   }
 
   return (
-    <a href={href} onClick={onNavigate} className={className}>
+    <a
+      href={href}
+      onClick={(e) => handlePublicNavClick(e, href, onNavigate)}
+      className={className}
+    >
       {label}
     </a>
   )

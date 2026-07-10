@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { useSidebarStore } from '@/stores/sidebarStore'
 import { springSnappy } from '@/lib/motion'
+import { resolveSafeMediaUrl } from '@/lib/safeMediaUrl'
 import { cn } from '@/lib/utils'
 
 import { DEFAULT_SCHOOL_NAME } from '@/config/schoolDefaults'
@@ -22,6 +23,7 @@ function SidebarPanel({ onNavigate, showCollapse = true }: { onNavigate?: () => 
   const { isCollapsed, toggleCollapsed } = useSidebarStore()
   const { data: generalSettings } = useGeneralSettings()
   const schoolName = generalSettings?.schoolName || DEFAULT_SCHOOL_NAME
+  const schoolLogo = resolveSafeMediaUrl(generalSettings?.schoolLogo)
 
   return (
     <div className="flex h-full flex-col">
@@ -32,9 +34,17 @@ function SidebarPanel({ onNavigate, showCollapse = true }: { onNavigate?: () => 
           onClick={onNavigate}
           className={cn('relative flex items-center gap-3', isCollapsed && 'justify-center')}
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl gradient-bg text-primary-foreground shadow-glow">
-            <GraduationCap className="h-5 w-5" />
-          </div>
+          {schoolLogo ? (
+            <img
+              src={schoolLogo}
+              alt={schoolName}
+              className="h-10 w-10 shrink-0 rounded-xl object-contain ring-1 ring-primary/15"
+            />
+          ) : (
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl gradient-bg text-primary-foreground shadow-glow">
+              <GraduationCap className="h-5 w-5" />
+            </div>
+          )}
           {!isCollapsed && (
             <div className="min-w-0">
               <p className="truncate text-sm font-bold leading-tight">{schoolName}</p>
@@ -46,7 +56,12 @@ function SidebarPanel({ onNavigate, showCollapse = true }: { onNavigate?: () => 
 
       <Separator className="opacity-60" />
 
-      <nav className={cn('flex-1 overflow-y-auto overflow-x-visible py-4 scrollbar-thin', isCollapsed ? 'px-2' : 'px-3')}>
+      <nav
+        className={cn(
+          'scrollbar-thin scrollbar-premium scroll-smooth-touch flex-1 overflow-y-auto overflow-x-visible py-4',
+          isCollapsed ? 'px-2' : 'px-3',
+        )}
+      >
         <SidebarNavTree items={dashboardNavTree} onNavigate={onNavigate} />
       </nav>
 

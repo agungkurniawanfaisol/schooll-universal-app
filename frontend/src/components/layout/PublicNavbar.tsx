@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion'
 import { ChevronDown, GraduationCap, Menu, Moon, Sun, X } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 import { PublicNavTree } from '@/components/layout/PublicNavTree'
@@ -20,7 +20,9 @@ import {
 } from '@/config/publicNav'
 import { useLandingContext } from '@/features/landing/LandingDataContext'
 import { useTheme } from '@/hooks/useTheme'
+import { handlePublicNavClick } from '@/lib/publicNavScroll'
 import { springSnappy } from '@/lib/motion'
+import { resolveSafeMediaUrl } from '@/lib/safeMediaUrl'
 import { cn } from '@/lib/utils'
 
 const navLinkClass =
@@ -39,7 +41,7 @@ function NavMenuItem({
 
   if (item.children?.length) {
     return (
-      <DropdownMenu>
+        <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button
             type="button"
@@ -69,7 +71,9 @@ function NavMenuItem({
                     {child.label}
                   </Link>
                 ) : (
-                  <a href={child.href}>{child.label}</a>
+                  <a href={child.href} onClick={(e) => handlePublicNavClick(e, child.href!)}>
+                    {child.label}
+                  </a>
                 )}
               </DropdownMenuItem>
             ) : null,
@@ -95,7 +99,11 @@ function NavMenuItem({
   }
 
   return (
-    <a href={item.href} className={cn(navLinkClass, activeClass)}>
+    <a
+      href={item.href}
+      className={cn(navLinkClass, activeClass)}
+      onClick={(e) => handlePublicNavClick(e, item.href!)}
+    >
       {item.label}
     </a>
   )
@@ -104,6 +112,7 @@ function NavMenuItem({
 export function PublicNavbar() {
   const { data, settings } = useLandingContext()
   const location = useLocation()
+  const headerRef = useRef<HTMLElement>(null)
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [hash, setHash] = useState(() =>
@@ -134,24 +143,31 @@ export function PublicNavbar() {
     if (!mobileOpen) {
       document.body.style.overflow = ''
       document.body.style.paddingRight = ''
+      if (headerRef.current) headerRef.current.style.paddingRight = ''
       return
     }
 
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
     document.body.style.overflow = 'hidden'
     if (scrollbarWidth > 0) {
-      document.body.style.paddingRight = `${scrollbarWidth}px`
+      const offset = `${scrollbarWidth}px`
+      document.body.style.paddingRight = offset
+      if (headerRef.current) headerRef.current.style.paddingRight = offset
     }
 
     return () => {
       document.body.style.overflow = ''
       document.body.style.paddingRight = ''
+      if (headerRef.current) headerRef.current.style.paddingRight = ''
     }
   }, [mobileOpen])
+
+  const schoolLogo = resolveSafeMediaUrl(settings.schoolLogo)
 
   return (
     <>
       <header
+        ref={headerRef}
         className={cn(
           'fixed inset-x-0 top-0 z-50 border-b py-3.5 transition-[background-color,box-shadow,border-color,backdrop-filter,padding] duration-500',
           scrolled
@@ -167,10 +183,10 @@ export function PublicNavbar() {
 
         <div className="container mx-auto flex items-center justify-between gap-4 px-4 lg:px-8">
           <Link to="/" className="group flex min-w-0 items-center gap-2.5">
-            {settings.schoolLogo ? (
+            {schoolLogo ? (
               <img
-                src={settings.schoolLogo}
-                alt=""
+                src={schoolLogo}
+                alt={settings.schoolName}
                 className="h-10 w-10 rounded-xl object-cover ring-1 ring-primary/10 transition-all duration-300 group-hover:ring-primary/30 group-hover:shadow-glow"
               />
             ) : (
@@ -265,7 +281,7 @@ export function PublicNavbar() {
                 </Button>
               </div>
 
-              <div className="flex-1 overflow-y-auto px-3 py-4">
+              <div className="scrollbar-thin scroll-smooth-touch flex-1 overflow-y-auto px-3 py-4">
                 <PublicNavTree
                   items={navItems}
                   variant="drawer"

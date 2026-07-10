@@ -6,7 +6,9 @@ import { Link } from 'react-router-dom'
 import { isRouteLink } from '@/config/publicNav'
 import { useLandingContext } from '@/features/landing/LandingDataContext'
 import { fadeUp, springSoft, staggerContainer, viewportOnce } from '@/lib/motion'
+import { resolveSafeMediaUrl } from '@/lib/safeMediaUrl'
 import { cn } from '@/lib/utils'
+import { NewsletterSubscribeForm } from '@/components/public/NewsletterSubscribeForm'
 
 const socialIconMap: Record<string, LucideIcon> = {
   instagram: Camera,
@@ -52,6 +54,9 @@ export function PublicFooter() {
   const half = Math.ceil(navigation.length / 2)
   const navCol1 = navigation.slice(0, half)
   const navCol2 = navigation.slice(half)
+  const schoolLogo = resolveSafeMediaUrl(settings.schoolLogo)
+  const footerLogo = resolveSafeMediaUrl(footer?.logo ? String(footer.logo) : null)
+  const brandLogo = footerLogo ?? schoolLogo
 
   return (
     <footer className="relative overflow-hidden border-t border-primary/10 section-alt">
@@ -89,8 +94,12 @@ export function PublicFooter() {
         >
           <motion.div variants={fadeUp} transition={springSoft} className="space-y-4">
             <div className="flex items-center gap-2.5">
-              {settings.schoolLogo ? (
-                <img src={settings.schoolLogo} alt="" className="h-10 w-10 rounded-xl object-cover ring-1 ring-primary/15" />
+              {brandLogo ? (
+                <img
+                  src={brandLogo}
+                  alt={settings.schoolName}
+                  className="h-10 w-10 rounded-xl object-contain ring-1 ring-primary/15"
+                />
               ) : (
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-bg text-primary-foreground shadow-soft">
                   <GraduationCap className="h-5 w-5" />
@@ -174,6 +183,16 @@ export function PublicFooter() {
             </ul>
           </motion.div>
         </motion.div>
+
+        <div className="my-10 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+        <div className="mb-10 max-w-md">
+          <h4 className="mb-3 text-sm font-bold uppercase tracking-wider text-primary">Newsletter</h4>
+          <p className="mb-4 text-sm text-muted-foreground">
+            Dapatkan informasi terbaru seputar sekolah.
+          </p>
+          <NewsletterSubscribeForm compact />
+        </div>
 
         <div className="my-10 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
