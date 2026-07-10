@@ -83,15 +83,24 @@ export function MediaManagerPage() {
         />
         <Card className="border-none shadow-soft">
           <CardContent className="p-6">
-            <ImageUploader
-              value=""
-              onChange={() => undefined}
-              onUpload={async (file) => {
-                await uploadMutation.mutateAsync(file)
-                return ''
+            <div
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                e.preventDefault()
+                const files = Array.from(e.dataTransfer.files)
+                void Promise.all(files.map((file) => uploadMutation.mutateAsync(file)))
               }}
-              label="Upload file media (drag & drop)"
-            />
+            >
+              <ImageUploader
+                value=""
+                onChange={() => undefined}
+                onUpload={async (file) => {
+                  await uploadMutation.mutateAsync(file)
+                  return ''
+                }}
+                label="Upload file media (drag & drop, multi-file didukung)"
+              />
+            </div>
           </CardContent>
         </Card>
 
