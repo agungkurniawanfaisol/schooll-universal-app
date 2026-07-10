@@ -1,6 +1,7 @@
 import { endpoints } from '@/api/endpoints'
 import { newsFromApi, newsToApi } from '@/api/mappers'
 import { ImageUploader } from '@/components/common/ImageUploader'
+import { RichTextEditor } from '@/components/common/RichTextEditor'
 import { CmsFormPage } from '@/components/common/CmsFormPage'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -50,8 +51,11 @@ export function NewsFormPage() {
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="content">Konten (HTML)</Label>
-            <Textarea id="content" rows={8} {...register('content')} />
+            <Label htmlFor="content">Konten</Label>
+            <RichTextEditor
+              value={watch('content') ?? ''}
+              onChange={(html) => setValue('content', html, { shouldValidate: true })}
+            />
             {errors.content && (
               <p className="text-sm text-destructive">{errors.content.message}</p>
             )}
