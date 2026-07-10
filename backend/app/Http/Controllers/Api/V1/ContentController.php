@@ -318,10 +318,12 @@ class ContentController extends BaseApiController
     {
         abort_unless($request->user()->can('content.update'), 403);
 
+        $footer = FooterSetting::query()->latest()->first();
+
         $data = $request->validate([
             'copyright_text' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'logo' => ['nullable', 'string', 'max:500', new SafeMediaUrl],
+            'logo' => ['nullable', 'string', 'max:500', new SafeMediaUrl($footer?->logo)],
             'status' => 'nullable|in:draft,published,archived',
         ]);
 

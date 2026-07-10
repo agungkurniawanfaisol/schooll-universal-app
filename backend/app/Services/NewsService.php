@@ -7,6 +7,7 @@ use App\Models\News;
 use App\Repositories\Contracts\NewsRepositoryInterface;
 use App\Support\HtmlSanitizer;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class NewsService
 {
@@ -37,6 +38,7 @@ class NewsService
         if (! empty($attrs['title']) && empty($attrs['slug'])) {
             $attrs['slug'] = generate_unique_slug(News::class, $attrs['title']);
         }
+        $attrs['preview_token'] = Str::random(64);
 
         return $this->repository->create($attrs);
     }

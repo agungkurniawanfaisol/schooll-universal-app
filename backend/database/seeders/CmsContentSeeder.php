@@ -60,6 +60,11 @@ class CmsContentSeeder extends Seeder
         );
 
         WebsiteSetting::query()->updateOrCreate(
+            ['key' => 'splash_screen_enabled'],
+            ['value' => ['enabled' => true], 'group' => 'general'],
+        );
+
+        WebsiteSetting::query()->updateOrCreate(
             ['key' => 'hero_stats'],
             [
                 'value' => [

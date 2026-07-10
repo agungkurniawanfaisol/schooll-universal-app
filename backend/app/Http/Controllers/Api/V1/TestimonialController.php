@@ -57,6 +57,27 @@ class TestimonialController extends BaseApiController
         return $this->noContent();
     }
 
+    public function submitPublic(\App\Http\Requests\Api\V1\Testimonial\SubmitTestimonialRequest $request): JsonResponse
+    {
+        $item = $this->service->submitPublic($request->validated());
+
+        return $this->created(new TestimonialResource($item), 'Testimoni berhasil dikirim dan menunggu moderasi');
+    }
+
+    public function updateModeration(
+        \App\Http\Requests\Api\V1\Testimonial\UpdateTestimonialModerationRequest $request,
+        Testimonial $testimonial,
+    ): JsonResponse {
+        $this->authorize('update', $testimonial);
+        $item = $this->service->updateModeration(
+            $testimonial,
+            $request->validated('moderation_status'),
+            $request->validated('status'),
+        );
+
+        return $this->success(new TestimonialResource($item), 'Moderation updated');
+    }
+
     protected function bulkDeleteModelClass(): string
     {
         return Testimonial::class;

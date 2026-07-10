@@ -4,11 +4,16 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Enums\PublishStatus;
 use App\Http\Resources\AboutSchoolResource;
+use App\Http\Resources\AcademicEventResource;
 use App\Http\Resources\AchievementResource;
 use App\Http\Resources\ActivityResource;
 use App\Http\Resources\AgendaResource;
 use App\Http\Resources\ContactInfoResource;
+use App\Http\Resources\CustomPageResource;
+use App\Http\Resources\DownloadDocumentResource;
+use App\Http\Resources\ExtracurricularResource;
 use App\Http\Resources\FacilityResource;
+use App\Http\Resources\FaqResource;
 use App\Http\Resources\FooterSettingResource;
 use App\Http\Resources\GalleryResource;
 use App\Http\Resources\HeroSectionResource;
@@ -20,11 +25,16 @@ use App\Http\Resources\SocialMediaResource;
 use App\Http\Resources\TeacherResource;
 use App\Http\Resources\TestimonialResource;
 use App\Http\Resources\VisionMissionResource;
+use App\Services\AcademicEventService;
 use App\Services\AchievementService;
 use App\Services\ActivityService;
 use App\Services\AgendaService;
 use App\Services\ContentService;
+use App\Services\CustomPageService;
+use App\Services\DownloadDocumentService;
+use App\Services\ExtracurricularService;
 use App\Services\FacilityService;
+use App\Services\FaqService;
 use App\Services\GalleryService;
 use App\Services\NewsService;
 use App\Services\SeoService;
@@ -49,6 +59,11 @@ class PublicController extends BaseApiController
         private FacilityService $facilityService,
         private AchievementService $achievementService,
         private NewsService $newsService,
+        private CustomPageService $customPageService,
+        private AcademicEventService $academicEventService,
+        private DownloadDocumentService $downloadDocumentService,
+        private FaqService $faqService,
+        private ExtracurricularService $extracurricularService,
     ) {}
 
     public function landing(): JsonResponse
@@ -93,6 +108,7 @@ class PublicController extends BaseApiController
 
         $testimonialPreview = $this->testimonialService->list([
             'published_only' => true,
+            'approved_only' => true,
             'all' => true,
             'sort' => 'sort_order',
             'direction' => 'asc',
@@ -112,6 +128,27 @@ class PublicController extends BaseApiController
             'direction' => 'desc',
         ])->take(4);
 
+        $faqPreview = $this->faqService->list([
+            'published_only' => true,
+            'all' => true,
+            'sort' => 'sort_order',
+            'direction' => 'asc',
+        ])->take(6);
+
+        $extracurricularPreview = $this->extracurricularService->list([
+            'published_only' => true,
+            'all' => true,
+            'sort' => 'sort_order',
+            'direction' => 'asc',
+        ])->take(4);
+
+        $academicEventPreview = $this->academicEventService->list([
+            'published_only' => true,
+            'all' => true,
+            'sort' => 'start_date',
+            'direction' => 'asc',
+        ])->take(6);
+
         return $this->success([
             'hero' => HeroSectionResource::collection($data['hero']),
             'about' => $data['about'] ? new AboutSchoolResource($data['about']) : null,
@@ -125,6 +162,9 @@ class PublicController extends BaseApiController
             'facilities' => FacilityResource::collection($facilityPreview),
             'achievements' => AchievementResource::collection($achievementPreview),
             'news' => NewsResource::collection($newsPreview),
+            'faqs' => FaqResource::collection($faqPreview),
+            'extracurriculars' => ExtracurricularResource::collection($extracurricularPreview),
+            'academic_events' => AcademicEventResource::collection($academicEventPreview),
             'contact_info' => ContactInfoResource::collection($data['contact_info']),
             'social_media' => SocialMediaResource::collection($data['social_media']),
             'navigation' => NavigationMenuResource::collection($data['navigation']),
@@ -134,6 +174,11 @@ class PublicController extends BaseApiController
                 'school_tagline' => data_get($this->settingService->get('school_tagline'), 'text'),
                 'school_logo' => data_get($this->settingService->get('school_logo'), 'url'),
                 'ppdb_url' => data_get($this->settingService->get('ppdb_url'), 'url'),
+                'splash_screen_enabled' => (bool) data_get(
+                    $this->settingService->get('splash_screen_enabled'),
+                    'enabled',
+                    true,
+                ),
                 'hero_stats' => $this->settingService->get('hero_stats', []),
             ],
             'seo' => ($seo = $this->seoService->getByPageKey('home'))
@@ -262,6 +307,7 @@ class PublicController extends BaseApiController
         $paginator = $this->testimonialService->list(
             [
                 'published_only' => true,
+                'approved_only' => true,
                 'search' => $request->get('search'),
                 'sort' => $request->get('sort', 'sort_order'),
                 'direction' => $request->get('direction', 'asc'),
@@ -352,6 +398,99 @@ class PublicController extends BaseApiController
         }
 
         return $this->success(new NewsResource($item));
+    }
+
+    public function pages(Request $request): JsonResponse
+    {
+        $paginator = $this->customPageService->list(
+            ['visible_now' => true, 'search' => $request->get('search')],
+            (int) $request->get('per_page', 12),
+        );
+
+        return $this->paginatedResource($paginator, CustomPageResource::class);
+    }
+
+    public function pageShow(string $slug): JsonResponse
+    {
+        $item = $this->customPageService->findBySlug($slug);
+        if (! $item || ! $this->customPageService->isPubliclyVisible($item)) {
+            return $this->error('Halaman tidak ditemukan', 404);
+        }
+
+        return $this->success(new CustomPageResource($item));
+    }
+
+    public function faqs(Request $request): JsonResponse
+    {
+        $paginator = $this->faqService->list(
+            [
+                'published_only' => true,
+                'search' => $request->get('search'),
+                'category' => $request->get('category'),
+                'sort' => 'sort_order',
+                'direction' => 'asc',
+            ],
+            (int) $request->get('per_page', 20),
+        );
+
+        return $this->paginatedResource($paginator, FaqResource::class);
+    }
+
+    public function downloads(Request $request): JsonResponse
+    {
+        $paginator = $this->downloadDocumentService->list(
+            [
+                'published_only' => true,
+                'search' => $request->get('search'),
+                'category' => $request->get('category'),
+                'sort' => 'sort_order',
+                'direction' => 'asc',
+            ],
+            (int) $request->get('per_page', 20),
+        );
+
+        return $this->paginatedResource($paginator, DownloadDocumentResource::class);
+    }
+
+    public function academicEvents(Request $request): JsonResponse
+    {
+        $paginator = $this->academicEventService->list(
+            [
+                'published_only' => true,
+                'search' => $request->get('search'),
+                'event_type' => $request->get('event_type'),
+                'sort' => 'start_date',
+                'direction' => 'asc',
+            ],
+            (int) $request->get('per_page', 50),
+        );
+
+        return $this->paginatedResource($paginator, AcademicEventResource::class);
+    }
+
+    public function extracurriculars(Request $request): JsonResponse
+    {
+        $paginator = $this->extracurricularService->list(
+            [
+                'published_only' => true,
+                'search' => $request->get('search'),
+                'sort' => 'sort_order',
+                'direction' => 'asc',
+            ],
+            (int) $request->get('per_page', 12),
+        );
+
+        return $this->paginatedResource($paginator, ExtracurricularResource::class);
+    }
+
+    public function extracurricularShow(string $slug): JsonResponse
+    {
+        $item = $this->extracurricularService->findBySlug($slug);
+        if (! $item || ! $this->isPublished($item)) {
+            return $this->error('Ekstrakurikuler tidak ditemukan', 404);
+        }
+
+        return $this->success(new ExtracurricularResource($item));
     }
 
     private function isPublished(Model $item): bool

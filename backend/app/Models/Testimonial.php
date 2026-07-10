@@ -24,6 +24,9 @@ class Testimonial extends Model
         'comment',
         'sort_order',
         'status',
+        'moderation_status',
+        'submitter_email',
+        'is_public_submission',
     ];
 
     protected function casts(): array
@@ -32,7 +35,13 @@ class Testimonial extends Model
             'rating' => 'integer',
             'sort_order' => 'integer',
             'status' => PublishStatus::class,
+            'is_public_submission' => 'boolean',
         ];
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('moderation_status', 'approved');
     }
 
     public function scopePublished($query)

@@ -46,4 +46,32 @@ class TestimonialService
     {
         return $this->repository->delete($model);
     }
+
+    /** @param array<string, mixed> $data */
+    public function submitPublic(array $data): Model
+    {
+        return $this->repository->create([
+            'name' => $data['name'],
+            'occupation' => $data['occupation'] ?? null,
+            'rating' => $data['rating'],
+            'comment' => $data['comment'],
+            'submitter_email' => $data['submitter_email'] ?? null,
+            'status' => 'draft',
+            'moderation_status' => 'pending',
+            'is_public_submission' => true,
+            'sort_order' => 0,
+        ]);
+    }
+
+    public function updateModeration(Testimonial $model, string $moderationStatus, ?string $status = null): Model
+    {
+        $attrs = ['moderation_status' => $moderationStatus];
+        if ($status !== null) {
+            $attrs['status'] = $status;
+        } elseif ($moderationStatus === 'approved') {
+            $attrs['status'] = 'published';
+        }
+
+        return $this->repository->update($model, $attrs);
+    }
 }
