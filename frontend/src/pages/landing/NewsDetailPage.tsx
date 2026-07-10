@@ -42,7 +42,12 @@ export function NewsDetailPage() {
 
   return (
     <>
-      <SEOHead title={title} description={excerpt || title} />
+      <SEOHead
+        title={title}
+        description={excerpt || title}
+        ogImage={article.thumbnail ? String(article.thumbnail) : undefined}
+        canonical={typeof window !== 'undefined' ? `${window.location.origin}/berita/${slug}` : undefined}
+      />
       <article className="surface-page py-24 md:py-28">
         <div className="container mx-auto max-w-3xl px-4 lg:px-8">
           <Button variant="ghost" size="sm" className="mb-6 -ml-2" asChild>
