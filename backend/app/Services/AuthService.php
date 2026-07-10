@@ -49,4 +49,22 @@ class AuthService
     {
         return $user->load('roles', 'permissions');
     }
+
+    /** @param  array<string, mixed>  $data */
+    public function updateProfile(User $user, array $data): User
+    {
+        $attrs = array_filter([
+            'name' => $data['name'] ?? null,
+            'avatar' => $data['avatar'] ?? null,
+            'password' => $data['password'] ?? null,
+        ], fn ($value) => $value !== null);
+
+        if (isset($attrs['password'])) {
+            $attrs['password'] = Hash::make($attrs['password']);
+        }
+
+        $user->update($attrs);
+
+        return $user->fresh(['roles', 'permissions']);
+    }
 }

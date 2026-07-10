@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\DTOs\Auth\LoginData;
 use App\Http\Requests\Api\V1\Auth\LoginRequest;
+use App\Http\Requests\Api\V1\Auth\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
@@ -46,5 +47,12 @@ class AuthController extends BaseApiController
         $token = $this->authService->refresh($request->user());
 
         return $this->success(['token' => $token], 'Token diperbarui');
+    }
+
+    public function updateProfile(UpdateProfileRequest $request): JsonResponse
+    {
+        $user = $this->authService->updateProfile($request->user(), $request->validated());
+
+        return $this->success(new UserResource($user), 'Profil diperbarui');
     }
 }

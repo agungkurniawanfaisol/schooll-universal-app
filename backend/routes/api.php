@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\SeoController;
 use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\TeacherController;
+use App\Http\Controllers\Api\V1\TeacherExportController;
 use App\Http\Controllers\Api\V1\TestimonialController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
@@ -51,12 +52,15 @@ Route::prefix('v1')->group(function (): void {
         Route::prefix('auth')->group(function (): void {
             Route::post('logout', [AuthController::class, 'logout']);
             Route::get('me', [AuthController::class, 'me']);
+            Route::patch('profile', [AuthController::class, 'updateProfile']);
             Route::post('refresh', [AuthController::class, 'refresh']);
         });
 
         Route::get('dashboard', [DashboardController::class, 'index'])
             ->middleware('permission:dashboard.view');
 
+        Route::get('teachers/export', [TeacherExportController::class, 'export']);
+        Route::post('teachers/import', [TeacherExportController::class, 'import']);
         Route::post('teachers/bulk-delete', [TeacherController::class, 'bulkDestroy']);
         Route::post('agendas/bulk-delete', [AgendaController::class, 'bulkDestroy']);
         Route::post('galleries/bulk-delete', [GalleryController::class, 'bulkDestroy']);
