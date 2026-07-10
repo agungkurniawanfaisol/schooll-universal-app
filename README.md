@@ -2,7 +2,7 @@
 
 Production-ready School Website CMS with a premium public landing page and a full-featured admin panel. Built with **React 19 + Vite** (frontend) and **Laravel 13 + PHP 8.4** (backend).
 
-> **Note:** Redis is intentionally excluded — cache uses **file driver** and queues use **database**, suitable for shared hosting.
+> **Note:** Redis is intentionally excluded — cache uses the **file driver** and queues use the **database**, suitable for shared hosting.
 
 ## Features
 
@@ -77,7 +77,7 @@ npm run dev
 | ----------------------- | --------------------- |
 | **Frontend (Vite HMR)** | http://localhost:5173 |
 
-The dev server proxies API requests to the backend. Keep this running while you work on UI — changes reload instantly.
+The dev server proxies API requests to the backend. Keep this running while you work on the UI — changes reload instantly.
 
 **Client development workflow:**
 
@@ -87,26 +87,7 @@ npm run dev          # start dev server (keep running)
 npm run typecheck    # check TypeScript
 npm run lint         # lint code
 npm run build        # production build
-npm test             # Vitest unit tests
 ```
-
-### Testing
-
-```bash
-# Backend (Pest + PHPUnit) — Docker
-docker compose exec backend php artisan test
-
-# Backend — local
-cd backend && php artisan test
-
-# Frontend unit tests (Vitest)
-cd frontend && npm test
-
-# Frontend E2E (Playwright — stack must be running)
-cd frontend && npm run test:e2e
-```
-
-CI runs backend and frontend unit tests on push/PR via [`.github/workflows/test.yml`](.github/workflows/test.yml).
 
 Point `VITE_API_URL` in `.env` to your running API (e.g. `http://localhost:8080/api/v1` when using Docker, or `http://localhost:8000/api/v1` with `php artisan serve`).
 
@@ -153,10 +134,10 @@ Build the frontend and serve static files from Apache or a CDN:
 ```bash
 cd frontend
 npm run build
-# Deploy frontend/dist/ to your static host or configure Apache alias
+# Deploy frontend/dist/ to your static host or configure an Apache alias
 ```
 
-API will be available at `https://your-domain.test/api/v1`.
+The API will be available at `https://your-domain.test/api/v1`.
 
 ### Docker (optional full stack)
 
@@ -173,7 +154,7 @@ docker compose exec backend php artisan storage:link
 | **phpMyAdmin**          | http://localhost:8081        |
 | **Mailpit**             | http://localhost:8025        |
 
-With Docker running, start frontend separately for client development:
+With Docker running, start the frontend separately for client development:
 
 ```bash
 cd frontend && npm install && npm run dev
@@ -266,6 +247,139 @@ AWS_ACCESS_KEY_ID=
 AWS_SECRET_ACCESS_KEY=
 AWS_DEFAULT_REGION=
 AWS_BUCKET=
+```
+
+## Testing
+
+### Backend (Pest + PHPUnit)
+
+Tests use **SQLite in-memory** (`backend/phpunit.xml`) — MySQL does not need to be running.
+
+**With Docker** (recommended when the stack is already up):
+
+```bash
+docker compose exec backend php artisan test
+```
+
+**Local** (without Docker):
+
+```bash
+cd backend
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan test
+```
+
+**Useful commands:**
+
+```bash
+# Single file or class
+php artisan test tests/Unit/SafeUrlTest.php
+php artisan test --filter=MediaUploadSecurity
+
+# Unit or feature only
+php artisan test tests/Unit
+php artisan test tests/Feature
+
+# Style check (Laravel Pint)
+./vendor/bin/pint --test
+```
+
+**Available suites:**
+
+| Folder           | Example coverage                                                 |
+| ---------------- | ---------------------------------------------------------------- |
+| `tests/Unit/`    | `SafeUrl`, `SafeMediaUrl`                                        |
+| `tests/Feature/` | Health check, public content, news/agenda, media upload security |
+
+---
+
+### Frontend
+
+#### Unit tests (Vitest)
+
+```bash
+cd frontend
+npm install          # first time, or after clone
+npm test             # run once (CI)
+npm run test:watch   # watch mode during development
+npm run test:coverage
+```
+
+Test files follow the pattern `src/**/*.{test,spec}.{ts,tsx}`, for example:
+
+- `src/api/mappers.test.ts`
+- `src/validators/cms.test.ts`
+- `src/lib/safeMediaUrl.test.ts`
+- `src/config/upload.test.ts`
+
+**With Docker** (separate `node_modules` volume):
+
+```bash
+docker compose exec frontend npm test
+```
+
+#### Typecheck & lint (recommended before commit)
+
+```bash
+cd frontend
+npm run typecheck
+npm run lint
+```
+
+#### E2E (Playwright)
+
+Requires a **running application** (API + frontend). Seed the database for admin login scenarios.
+
+**1. Start the stack:**
+
+```bash
+docker compose up -d --build
+docker compose exec backend php artisan migrate --seed --force
+docker compose exec frontend npm install
+docker compose exec frontend npm run dev
+```
+
+**2. Run E2E** (in another terminal):
+
+```bash
+cd frontend
+npx playwright install chromium   # first time only
+PLAYWRIGHT_BASE_URL=http://localhost:5173 npm run test:e2e
+```
+
+Interactive UI mode (debugging):
+
+```bash
+PLAYWRIGHT_BASE_URL=http://localhost:5173 npm run test:e2e:ui
+```
+
+**Smoke scenarios** (`frontend/e2e/smoke.spec.ts`):
+
+- Landing page, news/agenda lists, news detail
+- Admin login → dashboard
+- General settings & hero settings pages
+
+The default `PLAYWRIGHT_BASE_URL` in `playwright.config.ts` is `http://localhost:8080` (nginx). Adjust if the frontend runs on Vite (`:5173`) or a production build.
+
+---
+
+### CI (GitHub Actions)
+
+| Workflow                                                   | Trigger                 | Contents                                                       |
+| ---------------------------------------------------------- | ----------------------- | -------------------------------------------------------------- |
+| [`.github/workflows/test.yml`](.github/workflows/test.yml) | push/PR to `main`       | Backend `php artisan test` + frontend `typecheck` + `npm test` |
+| [`.github/workflows/e2e.yml`](.github/workflows/e2e.yml)   | push to `main` / manual | Docker stack + Playwright E2E                                  |
+
+### Quick check before push
+
+```bash
+# Backend
+docker compose exec backend php artisan test
+
+# Frontend
+cd frontend && npm run typecheck && npm test
 ```
 
 ## Code Quality
